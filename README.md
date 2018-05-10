@@ -6,7 +6,7 @@ Add Code Here for our project:
 - Java code (Android Studio) for the application
 - Web (HTML, CSS, JS) for the website
 
-## Give Explanation here of what we want for each part of the project (website, application, Raspberry PI)
+Give Explanation here of what we want for each part of the project (website, application, Raspberry PI):
 
 ### Website
 
