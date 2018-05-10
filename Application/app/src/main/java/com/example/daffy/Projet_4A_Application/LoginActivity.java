@@ -1,22 +1,14 @@
-package com.example.daffy.login_signupmodules_lab2_sagardafle;
+package com.example.daffy.Projet_4A_Application;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.app.Fragment;
 import android.widget.EditText;
 
-/**
- * Created by daffy on 7/1/16.
- */
+
 public class LoginActivity extends FragmentActivity {
     DatabaseHelper helper = new DatabaseHelper(this);
-    private static EditText emailid,pass;
+    private  EditText emailid,pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

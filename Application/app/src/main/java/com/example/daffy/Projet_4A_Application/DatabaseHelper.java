@@ -1,4 +1,4 @@
-package com.example.daffy.login_signupmodules_lab2_sagardafle;
+package com.example.daffy.Projet_4A_Application;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,9 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * Created by daffy on 7/1/16.
- */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     static SQLiteDatabase db;
@@ -47,8 +44,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_FULLNAME,userdata.getFullname());
         values.put(COLUMN_EMAILID,userdata.getEmailid());
-        values.put(COLUMN_MOBILENO,userdata.getMobile());
-        values.put(COLUMN_AGE,userdata.getAge());
         values.put(COLUMN_PASSWORD,userdata.getPassword());
 
         try{

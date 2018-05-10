@@ -1,4 +1,4 @@
-package com.example.daffy.login_signupmodules_lab2_sagardafle;
+package com.example.daffy.Projet_4A_Application;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,17 +14,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-/**
- * Created by daffy on 6/30/16.
- */
-
-
 
 public class LoginModuleFragment extends Fragment {
     public static View loginview;
-    private static Button loginbtn, registerbtn;
+    private Button loginbtn, registerbtn;
     private static FragmentManager loginfragmentManager;
-    private static EditText emailid,pass,fullname;
+    private EditText emailid,pass,fullname;
 
 
     public LoginModuleFragment() {

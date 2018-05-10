@@ -1,10 +1,8 @@
-package com.example.daffy.login_signupmodules_lab2_sagardafle;
+package com.example.daffy.Projet_4A_Application;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,13 +14,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-/**
- * Created by daffy on 7/2/16.
- */
+
 public class InitialSetupActivity extends AppCompatActivity {
     private ImageButton addbtn;
     private EditText et1,et2;
-    public static View initialsetupview;
+    public  View initialsetupview;
 
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.daffy.login_signupmodules_lab2_sagardafle;
+package com.example.daffy.Projet_4A_Application;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,15 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-/**
- * Created by daffy on 7/1/16.
- */
 public class SignUpModuleFragment extends Fragment {
 
-    private static View signupview;
+    private  View signupview;
     private static FragmentManager registerfragmentManager;
 
 
@@ -28,9 +22,9 @@ public class SignUpModuleFragment extends Fragment {
      * Sign-up form fields
      */
 
-    private static EditText fullName, emailId, mobileNumber, age, password, confirmPassword;
+    private  EditText fullName, emailId, mobileNumber, age, password, confirmPassword;
 
-    private static Button registerbutton;
+    private  Button registerbutton;
 
     public SignUpModuleFragment() {
 
@@ -48,7 +42,6 @@ public class SignUpModuleFragment extends Fragment {
         registerbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-        Log.d("HEREEEE", " ++++");
               boolean areFieldsValid = validatefields();
                 if(areFieldsValid) {
                     Toast.makeText(getActivity(), "Successfully registered!!!",
@@ -57,14 +50,10 @@ public class SignUpModuleFragment extends Fragment {
                     UserData userdata = new UserData();
                     userdata.setFullname(fullName.getText().toString());
                     userdata.setEmailid(emailId.getText().toString());
-                    userdata.setAge(Integer.parseInt(age.getText().toString()));
-                    userdata.setMobile(mobileNumber.getText().toString());
                     userdata.setPassword(password.getText().toString());
 
                     Log.d("userdata.getFullname", userdata.getFullname());
                     Log.d("userdata.getEmailid", userdata.getEmailid());
-                    Log.d("userdata.getAge", String.valueOf(userdata.getAge()));
-                    Log.d("userdata.getMobile", userdata.getMobile());
                     Log.d("userdata.getPassword", userdata.getPassword());
 
                     SignUpActivity signupactivity = new SignUpActivity();
@@ -85,8 +74,6 @@ public class SignUpModuleFragment extends Fragment {
 
         fullName = (EditText) signupview.findViewById(R.id.fullName);
         emailId = (EditText) signupview.findViewById(R.id.userEmailId);
-        mobileNumber = (EditText) signupview.findViewById(R.id.mobileNumber);
-        age = (EditText) signupview.findViewById(R.id.age);
         password = (EditText) signupview.findViewById(R.id.password);
         confirmPassword = (EditText) signupview.findViewById(R.id.confirmPassword);
 
@@ -98,8 +85,6 @@ public class SignUpModuleFragment extends Fragment {
         // Get all edittext texts
         String getFullName = fullName.getText().toString();
         String getEmailId = emailId.getText().toString();
-        String getMobileNumber = mobileNumber.getText().toString();
-        String getAge = age.getText().toString();
         String getPassword = password.getText().toString();
         String getConfirmPassword = confirmPassword.getText().toString();
 
@@ -110,8 +95,6 @@ public class SignUpModuleFragment extends Fragment {
         // Check if all strings are null or not
         if (getFullName.equals("") || getFullName.length() == 0
                 || getEmailId.equals("") || getEmailId.length() == 0
-                || getMobileNumber.equals("") || getMobileNumber.length() == 0
-                || getAge.equals("") || getAge.length() == 0
                 || getPassword.equals("") || getPassword.length() == 0
                 || getConfirmPassword.equals("")
                 || getConfirmPassword.length() == 0)

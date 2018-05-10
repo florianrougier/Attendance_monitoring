@@ -1,13 +1,8 @@
-package com.example.daffy.login_signupmodules_lab2_sagardafle;
+package com.example.daffy.Projet_4A_Application;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
-/**
- * Created by daffy on 7/1/16.
- */
 public class SignUpActivity extends Activity {
     DatabaseHelper helper = new DatabaseHelper(this);
     @Override
