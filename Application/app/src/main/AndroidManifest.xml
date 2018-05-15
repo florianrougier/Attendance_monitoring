@@ -1,23 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.daffy.Projet_4A_Application">
+    package="com.androidtutorialshub.application">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".helpers.UserApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/mincheck"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.daffy.Projet_4A_Application.MainActivity">
+        <activity
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.daffy.Projet_4A_Application.LoginActivity"></activity>
-        <activity android:name="com.example.daffy.Projet_4A_Application.SignUpActivity"></activity>
-        <activity android:name="com.example.daffy.Projet_4A_Application.InitialSetupActivity"></activity>
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.UsersListActivity"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".service.SynchroService" />
+
+        <activity
+            android:name=".activities.MenuStudentActivity"
+            android:label="@string/title_activity_menu_student"
+            android:parentActivityName=".activities.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.androidtutorialshub.application.activities.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".activities.MenuTeacherActivity"
+            android:label="@string/title_activity_menu_student"
+            android:parentActivityName=".activities.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.androidtutorialshub.application.activities.LoginActivity" />
+        </activity>
     </application>
 
 </manifest>
