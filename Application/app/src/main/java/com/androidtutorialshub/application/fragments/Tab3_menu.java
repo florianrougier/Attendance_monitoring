@@ -7,15 +7,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import com.androidtutorialshub.application.R;
 import com.androidtutorialshub.application.adapters.UsersRecyclerAdapter;
 import com.androidtutorialshub.application.data.DatabaseHelper;
+import com.androidtutorialshub.application.helpers.InputValidation;
 import com.androidtutorialshub.application.model.User;
 
 import java.util.ArrayList;
@@ -30,22 +34,22 @@ import java.util.List;
  * Use the {@link Tab3_menu#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Tab3_menu extends Fragment {
+public class Tab3_menu extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView recyclerViewUsers;
     private List<User> listUsers;
+    private User user;
     private UsersRecyclerAdapter usersRecyclerAdapter;
     private DatabaseHelper databaseHelper;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private static String email;
 
     public Tab3_menu() {
         // Required empty public constructor
@@ -56,15 +60,14 @@ public class Tab3_menu extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Tab3_menu.
      */
     // TODO: Rename and change types and number of parameters
-    public static Tab3_menu newInstance(String param1, String param2) {
+    public static Tab3_menu newInstance(String param1) {
         Tab3_menu fragment = new Tab3_menu();
         Bundle args = new Bundle();
+        email = param1;
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,15 +77,15 @@ public class Tab3_menu extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_users_list, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_users_list, container, false);
+        return v;
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -107,6 +110,7 @@ public class Tab3_menu extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -138,16 +142,17 @@ public class Tab3_menu extends Fragment {
     private void initObjects() {
         listUsers = new ArrayList<>();
         usersRecyclerAdapter = new UsersRecyclerAdapter(listUsers);
+        //user = new User();
+        //usersRecyclerAdapter = new UsersRecyclerAdapter(user);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext()); // MODIF
-        recyclerViewUsers.setLayoutManager(mLayoutManager);
-        recyclerViewUsers.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewUsers.setHasFixedSize(true);
-        recyclerViewUsers.setAdapter(usersRecyclerAdapter);
-        databaseHelper = new DatabaseHelper(getContext());
+          RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext()); // MODIF
+          recyclerViewUsers.setLayoutManager(mLayoutManager);
+          recyclerViewUsers.setItemAnimator(new DefaultItemAnimator());
+          recyclerViewUsers.setHasFixedSize(true);
+          recyclerViewUsers.setAdapter(usersRecyclerAdapter);
+          databaseHelper = new DatabaseHelper(getContext());
 
-
-        getDataFromSQLite();
+         getDataFromSQLite();
     }
 
     /**
@@ -160,7 +165,7 @@ public class Tab3_menu extends Fragment {
             @Override
             protected Void doInBackground(Void... params) {
                 listUsers.clear();
-                listUsers.addAll(databaseHelper.getAllUser());
+                listUsers.addAll(databaseHelper.getUser(email));
 
                 return null;
             }
@@ -172,4 +177,5 @@ public class Tab3_menu extends Fragment {
             }
         }.execute();
     }
+
 }

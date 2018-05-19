@@ -46,6 +46,7 @@ public class MenuTeacherActivity extends AppCompatActivity
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,8 @@ public class MenuTeacherActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
+        Intent intent = getIntent();
+        this.email =intent.getStringExtra("EMAIL");
     }
 
 
@@ -113,6 +115,9 @@ public class MenuTeacherActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void changePassword(View view) {
     }
 
 
@@ -174,7 +179,7 @@ public class MenuTeacherActivity extends AppCompatActivity
                     fragment = new Tab2_menu();
                     break;
                 case 2:
-                    fragment = new Tab3_menu();
+                    fragment = Tab3_menu.newInstance(email);
                     break;
                 case 3:
                     fragment = new Tab4_menu();
@@ -185,8 +190,8 @@ public class MenuTeacherActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
     }
 }

@@ -105,6 +105,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public List<User> getUser(String email) {
+        //Initialize array of parameters
+        String[] param = {email};
+          // Create a new user
+          //User user = new User();
+        List<User> userList = new ArrayList<User>();
+        // Initialize the database in reader mode
+        SQLiteDatabase db = this.getReadableDatabase();
+        //Request to retrieve the user from the database
+        String request = "select * from " + TABLE_USER +
+                " where " + COLUMN_USER_EMAIL +
+                "=?";
+        Cursor cursor = db.rawQuery(request, param);
+
+        if (cursor.moveToFirst()) {
+            do {
+                User user = new User();
+                user.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))));
+                user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+                user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
+                user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+                userList.add(user);
+            } while (cursor.moveToNext());
+        }
+//             user.setId(1);
+//             user.setName("ooo");
+//             user.setEmail("aaa@gmail.com");
+//             user.setPassword("az");
+
+          cursor.close();
+          db.close();
+
+          return userList;
+    }
+
     /**
      * This method is to fetch all user and return the list of user records
      *

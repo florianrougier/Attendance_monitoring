@@ -12,7 +12,6 @@ public class User {
 
     @SerializedName("nom")
     private String name;
-
     private String email;
 
     @SerializedName("prenom")

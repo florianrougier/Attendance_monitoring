@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">MinCheck</string>
-    <string name="text_accounts">Votre compte</string>
+    <string name="text_accounts">Mes informations personnelles</string>
     <string name="hint_name">Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_new_password">Enter a new password</string>
+    <string name="hint_confirm_new_password">Confirm your new password</string>
+    <string name="hint_edit_password">New password</string>
+    <string name="hint_confirm_edit_password">CONFIRM</string>
     <string name="text_login">Login</string>
     <string name="text_register">Register</string>
     <string name="error_message_name">Enter Full Name</string>
@@ -18,7 +22,7 @@
     <string name="error_password_match">Password Does Not Matches</string>
     <string name="error_valid_email_password">Wrong Email or Password</string>
     <string name="action_settings">Se déconnecter</string>
-    <string name="text_hello">Hello</string>
+    <string name="text_hello">Hello </string>
     <string name="text_title">Votre compte</string>
     <string name="already_a_member_login">Already a member? Login</string>
     <string name="error_update_bdd">Failed to add users to database</string>
