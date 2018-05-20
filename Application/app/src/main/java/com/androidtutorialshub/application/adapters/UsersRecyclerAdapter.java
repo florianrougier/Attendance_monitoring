@@ -1,12 +1,11 @@
 package com.androidtutorialshub.application.adapters;
 
-import android.content.ContentResolver;
+
 import android.content.Context;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +19,7 @@ import com.androidtutorialshub.application.R;
 import com.androidtutorialshub.application.data.DatabaseHelper;
 import com.androidtutorialshub.application.helpers.InputValidation;
 import com.androidtutorialshub.application.model.User;
+import com.androidtutorialshub.application.service.UpdateUserService;
 
 import java.util.List;
 
@@ -95,6 +95,13 @@ public class UsersRecyclerAdapter extends RecyclerView.Adapter<UsersRecyclerAdap
             user.setName(userViewHolder.textViewName.getText().toString().trim());
             user.setEmail(userViewHolder.textViewEmail.getText().toString().trim());
             user.setPassword(userViewHolder.editViewPassword.getText().toString().trim());
+
+            // Call the service to update user information on the server TODO: UPDATE WHEN THE SERVER IS CORRECTLY SET UP
+//            Intent intent = new Intent(context, UpdateUserService.class);
+//            intent.putExtra("name", user.getName());
+//            intent.putExtra("email", user.getEmail());
+//            intent.putExtra("password", user.getPassword());
+//            context.startService(intent);
 
             databaseHelper.updateUser(user);
 

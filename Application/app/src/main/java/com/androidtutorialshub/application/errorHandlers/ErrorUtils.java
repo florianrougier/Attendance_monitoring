@@ -1,6 +1,7 @@
 package com.androidtutorialshub.application.errorHandlers;
 
 import com.androidtutorialshub.application.service.SynchroService;
+import com.androidtutorialshub.application.service.UpdateUserService;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

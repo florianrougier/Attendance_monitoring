@@ -4,7 +4,87 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.androidtutorialshub.application.activities.MenuStudentActivity$PlaceholderFragment"
-    android:background="@color/colorBackground">
+    tools:context="com.androidtutorialshub.application.activities.MenuStudentActivity$PlaceholderFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/colorBackground"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/information"
+                android:textAlignment="center" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/information2"
+                android:textAlignment="center" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="50dp"
+            android:layout_weight="2"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:text="@string/code"
+                android:textAlignment="center"
+                android:textColor="@color/colorEpf"
+                android:textSize="18sp"
+                android:translationY="10dp" />
+
+            <EditText
+                android:id="@+id/editCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/tapes_ton_code_ici"
+                android:inputType="textPersonName"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/holo_green_dark"
+            android:text="@string/send_password" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -90,8 +90,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.appCompatButtonLogin:
-                Intent intent2 = new Intent(this, SynchroService.class);
-                startService(intent2);
+                //Intent intent = new Intent(this, SynchroService.class);
+                //startService(intent); TODO UNCOMMENT THIS
                 verifyFromSQLite();
                 break;
             case R.id.textViewLinkRegister:

@@ -13,6 +13,15 @@ public class User {
     @SerializedName("nom")
     private String name;
     private String email;
+    private boolean isTeacher;
+
+    public boolean isTeacher() {
+        return isTeacher;
+    }
+
+    public void setTeacher(boolean teacher) {
+        isTeacher = teacher;
+    }
 
     @SerializedName("prenom")
     private String password;
