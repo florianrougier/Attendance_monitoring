@@ -3,10 +3,14 @@ var bcrypt = require('bcrypt');
 
 // create a sequelize instance with our local postgres database information.
 var sequelize = new Sequelize('postgres://postgres@localhost:5432/auth-system', {
-	 operatorsAliases: false });
+	 operatorsAliases: false,
+	 define: {
+        timestamps: false
+     }
+    });
 
 //setup User model and its fields.
-var User = sequelize.define('users_db', {
+var User = sequelize.define('users_dbtest2', {
 	username:{
 		type: Sequelize.STRING,
 		unique: true,
@@ -18,6 +22,10 @@ var User = sequelize.define('users_db', {
 		allowNull: false
 	},
 	password: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
+	droits: {
 		type: Sequelize.STRING,
 		allowNull: false
 	}

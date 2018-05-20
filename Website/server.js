@@ -117,16 +117,20 @@ app.route('/login')
 
 // route vers la page d'acceuil
 app.get('/AcceuilSession', (req, res) => {
-    if (req.session.user && req.cookies.user_sid) {
-	   res.sendFile(__dirname + '/views/AcceuilSession.html');
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+	   res.sendFile(__dirname + '/views/administrationn/AcceuilSession.html');
+    } else if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'professeur') {
+	   res.sendFile(__dirname + '/views/professeur/AcceuilSession.html');
+    } else if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'eleve') {
+        res.sendFile(__dirname + '/views/eleve/AcceuilSession.html');
     } else {
-	   res.redirect('/login');
+        res.redirect('/login');
     }
 });
 
 // route vers la page d'administration
 app.get('/administration', (req, res) => {
-    if (req.session.user && req.cookies.user_sid) {
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
        res.sendFile(__dirname + '/views/administration.html');
     } else {
        res.redirect('/login');
@@ -135,18 +139,16 @@ app.get('/administration', (req, res) => {
 
 // route vers la page de création d'utilisateur
 app.get('/creerutilisateur', (req, res) => {
-    if (req.session.user && req.cookies.user_sid) {
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
        res.sendFile(__dirname + '/views/administrationn/creerutilisateur.html');
     } else {
        res.redirect('/login');
     }
-    console.log(__dirname + '/views/administrationn/creerutilisateur.html');
-    
 });
 
 // route vers la page de création d'utilisateur à partir d'un fichier
 app.get('/creerListUtilisateur', (req, res) => {
-    if (req.session.user && req.cookies.user_sid) {
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
        res.sendFile(__dirname + '/views/administrationn/creerListUtilisateur.html');
     } else {
        res.redirect('/login');
@@ -155,68 +157,77 @@ app.get('/creerListUtilisateur', (req, res) => {
 
 // permet d'uplader un fichier xlsx ou xls pour le mettre dans la BDD
 app.post('/uploadFileUtilisateurs', function(req, res) {
-
-    if (!req.files){
-        return res.status(400).send('No files were uploaded.');
-    }
-    
-    var file = req.files.filename;
-    var filename = file.name;   
-
-    // Use the mv() method to place the file somewhere on your server
-    file.mv(__dirname + '/public/xslx/' + filename, function(err) {
-
-        if (err){
-            return res.status(500).send(err);
-        } else {
-            res.send('File uploaded!');
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+        if (!req.files){
+            return res.status(400).send('No files were uploaded.');
         }
+        
+        var file = req.files.filename;
+        var filename = file.name;   
 
-     var obj = xlsx.parse(__dirname + '/public/xslx/' + filename); // parses a file
-     var rows = [];
-     var writeStr = "";
+        // Use the mv() method to place the file somewhere on your server
+        file.mv(__dirname + '/public/xslx/' + filename, function(err) {
 
-    //looping through all sheets
-    for(var i = 0; i < obj.length; i++) {
-        var sheet = obj[i];
-        //loop through all rows in the sheet
-        for(var j = 0; j < sheet['data'].length; j++) {
-            //add the row to the rows array
-            rows.push(sheet['data'][j]);
-        }
-    }
-
-    //creates the csv string to write it to a file
-    for(var i = 0; i < rows.length; i++) {
-        writeStr += rows[i].join(",") + "\n";
-        }
-
-        fs.writeFile(__dirname + "/public/xslx/" + "/test.csv", writeStr, function(err) {
-            if(err) {
-                return console.log(err);
+            if (err){
+                return res.status(500).send(err);
+            } else {
+                res.send('File uploaded!');
             }
+
+         var obj = xlsx.parse(__dirname + '/public/xslx/' + filename); // parses a file
+         var rows = [];
+         var writeStr = "";
+
+        //looping through all sheets
+        for(var i = 0; i < obj.length; i++) {
+            var sheet = obj[i];
+            //loop through all rows in the sheet
+            for(var j = 0; j < sheet['data'].length; j++) {
+                //add the row to the rows array
+                rows.push(sheet['data'][j]);
+            }
+        }
+
+        //creates the csv string to write it to a file
+        for(var i = 0; i < rows.length; i++) {
+            writeStr += rows[i].join(",") + "\n";
+            }
+
+            fs.writeFile(__dirname + "/public/xslx/" + "/test.csv", writeStr, function(err) {
+                if(err) {
+                    return console.log(err);
+                }
+            });
+
         });
 
-    });
-
+    } else {
+        res.redirect('/login');
+    }
 
 });
 
 
 // route vers la page de présence / d'absence
 app.get('/presence', (req, res) => {
-    if (req.session.user && req.cookies.user_sid) {
-       res.sendFile(__dirname + '/views/presence.html');
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+       res.sendFile(__dirname + '/views/administrationn/presence.html');
+    } else if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'professeur') {
+        res.sendFile(__dirname + '/views/professeur/presence.html');
+    } else if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'eleve') {
+        res.sendFile(__dirname + '/views/eleve/presence.html');
     } else {
-       res.redirect('/login');
+        res.redirect('/login');
     }
 });
 
 // route pour le logout
 app.get('/logout', (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
-        res.clearCookie('user_sid');
-        res.redirect('/');
+        //res.clearCookie('user_sid');
+        //res.redirect('/');
+        req.session.destroy();
+        res.redirect('/login');
     } else {
         res.redirect('/login');
     }
