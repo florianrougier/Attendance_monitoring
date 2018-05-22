@@ -3,17 +3,17 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var morgan = require('morgan');
-var User = require('./models/user');
+var db = require('./models/index');
 var path = require('path');
 var fileUpload = require('express-fileupload');
 var xlsx = require('node-xlsx');
 var fs = require('fs');
 
 
-// invoke an instance of express application.
+// crée une instance d'express
 var app = express();
 
-// set out application port
+// définition du port
 app.set('port', 9000);
 
 // permet d'avoir les log de toutes les requetes au serveur
@@ -22,15 +22,16 @@ app.use(morgan('dev'));
 // initialize body-parser to parse incoming parameters requets to req.body
 app.use(bodyParser.urlencoded({ extended: true}));
 
-// initialize cookie-parser to allow us access the coolie stored in the browser.
+// initialize cookie-parser to allow us access the cookie stored in the browser.
 app.use(cookieParser());
 
-
+// charge le module permetttant d'uploader des fichiers
 app.use(fileUpload());
 
 // initialize express-session to allow us track the logged-in user across sessions.
 var idleTimeoutSeconds = 600;
 
+// options du cookie de session
 app.use(session({
     key: 'user_sid',
     secret: 'randomsecret',
@@ -53,7 +54,7 @@ app.use((req, res, next) => {
 })
 
 
-// middleware functino to check for logged-in users
+// fonction middleware qui permet de vérifier quels sont les utilisateurs connectés
 var sessionChecker = (req, res, next) => {
     if (req.session.user && req.cookies.user_sid) {
 	   res.redirect('/AcceuilSession');
@@ -97,12 +98,22 @@ app.route('/signup')
 app.route('/login')
     .get(sessionChecker, (req, res) => {
         res.sendFile(__dirname + '/views/login.html');
+
+        //créer un élève
+        //db['eleve'].create({id:4, username:'sfgdg'}).then(user => console.log(user));
+
+        //créer un utilisateur sans la page de connexion :
+        //db['users'].create({username:'simon', password:'test', email:'boitepastresutile@gmail.com', droits:'admin'});
+
+        // vérifier ce que contient table eleve
+        //db['eleve'].findAll().then(eleve => console.log(eleve));
+
     })
     .post((req, res) => {
         var username = req.body.username,
             password = req.body.password;
 
-        User.findOne({ where: { username: username } }).then(function (user) {
+        db['users'].findOne({ where: { username: username } }).then(function (user) {
             if (!user) {
                 res.redirect('/login');
             } else if (!user.validPassword(password)) {
@@ -233,19 +244,11 @@ app.get('/logout', (req, res) => {
     }
 });
 
-/*
-//The 404 Route (ALWAYS Keep this as the last route)
-app.get('*', function(req, res){
-  res.send('what???', 404);
-});
-*/
-
-
 // route pour la page 404
 app.use(function (req, res, next) {
     res.status(404).send("Sorry can't find that!")
 });
 
-// start the express server
-// on ecoute le port 'port' (egale à 9000 ici)
+// lance le serveur express
+// on ecoute le port (port 9000 ici)
 app.listen(app.get('port'), () => console.log(`App started on port ${app.get('port')}`));

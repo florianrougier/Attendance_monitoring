@@ -1,53 +1,44 @@
-var Sequelize = require('sequelize');
-var bcrypt = require('bcrypt');
 
-// create a sequelize instance with our local postgres database information.
-var sequelize = new Sequelize('postgres://postgres@localhost:5432/auth-system', {
-	 operatorsAliases: false,
-	 define: {
-        timestamps: false
-     }
-    });
+module.exports = (sequelize, DataTypes) => {
+	
+	var bcrypt = require('bcrypt');
 
-//setup User model and its fields.
-var User = sequelize.define('users_dbtest2', {
-	username:{
-		type: Sequelize.STRING,
-		unique: true,
-		allowNull: false
-	},
-	email: {
-		type: Sequelize.STRING,
-		unique: true,
-		allowNull: false
-	},
-	password: {
-		type: Sequelize.STRING,
-		allowNull: false
-	},
-	droits: {
-		type: Sequelize.STRING,
-		allowNull: false
-	}
-}, {
-	hooks: {
-		beforeCreate: (user) => {
-			const salt = bcrypt.genSaltSync();
-			user.password = bcrypt.hashSync(user.password, salt);
+	var User = sequelize.define('user', {
+		username:{
+			type: DataTypes.STRING,
+			unique: true,
+			allowNull: false
+		},
+		email: {
+			type: DataTypes.STRING,
+			unique: true,
+			allowNull: false
+		},
+		password: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		droits: {
+			type: DataTypes.STRING,
+			allowNull: false
 		}
+		}, {
+		hooks: {
+			beforeCreate: (user) => {
+				const salt = bcrypt.genSaltSync();
+				user.password = bcrypt.hashSync(user.password, salt);
+			}
+		}
+
+	});
+
+	User.prototype.validPassword = function (password) {
+	return bcrypt.compareSync(password, this.password);
 	}
 
-});
+	User.prototype.sayHi = function () {
+		console.log('HI !!!!!!!!!!!!');
+	}
 
-User.prototype.validPassword = function (password) {
-	return bcrypt.compareSync(password, this.password);
-}
-
-
-// create all the defined tables in the specified database.
-sequelize.sync()
-    .then(() => console.log('users table has been successfully created, if one doesn\'t exist'))
-    .catch(error => console.log('This error occured', error));
-
-// export User model for use in other files.
-module.exports = User;
+	return User;
+};
