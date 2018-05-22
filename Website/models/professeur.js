@@ -1,7 +1,7 @@
 
 module.exports = (sequelize, DataTypes) => {
 
-	var Eleve = sequelize.define('eleve', {
+	var Professeur = sequelize.define('professeur', {
 		email: {
 			type: DataTypes.STRING,
 			unique: true,
@@ -12,18 +12,11 @@ module.exports = (sequelize, DataTypes) => {
 		prenom: {
 			type: DataTypes.STRING
 		},
-		promo: {
-			type: DataTypes.INTEGER
-		},
-		groupe: {
-			type: DataTypes.STRING
-		}
-
 	});
 
-	Eleve.prototype.sayHi = function () {
+	Professeur.prototype.sayHi = function () {
 		console.log('HI !!!!!!!!!!!!');
 	}
 
-	return Eleve;
+	return Professeur;
 };

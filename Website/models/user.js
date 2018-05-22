@@ -1,10 +1,10 @@
 
 module.exports = (sequelize, DataTypes) => {
-	
+
 	var bcrypt = require('bcrypt');
 
 	var User = sequelize.define('user', {
-		username:{
+		username: {
 			type: DataTypes.STRING,
 			unique: true,
 			allowNull: false
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 
 	User.prototype.sayHi = function () {
-		console.log('HI !!!!!!!!!!!!');
+		console.log(this.username);
 	}
 
 	return User;

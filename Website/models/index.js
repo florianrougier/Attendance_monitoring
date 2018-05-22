@@ -13,8 +13,11 @@ var sequelize = new Sequelize('postgres://postgres@localhost:5432/projetmin', {
 db = {};
 
 
-db['eleve'] =  sequelize.import(__dirname + '/eleve');
+db['eleves'] =  sequelize.import(__dirname + '/eleve');
 db['users'] = sequelize.import(__dirname + '/user');
+db['professeurs'] = sequelize.import(__dirname + '/professeur');
+db['presences'] = sequelize.import(__dirname + '/presence');
+db['courss'] = sequelize.import(__dirname + '/cours');
 
 
 // crée toutes les tables déinies dans la base de donnée
