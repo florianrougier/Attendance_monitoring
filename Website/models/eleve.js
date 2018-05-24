@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 		email: {
 			type: DataTypes.STRING,
 			unique: true,
+			primaryKey:true,
 		},
 		nom: {
 			type: DataTypes.STRING
@@ -21,9 +22,15 @@ module.exports = (sequelize, DataTypes) => {
 
 	});
 
-	Eleve.prototype.sayHi = function () {
-		console.log('HI !!!!!!!!!!!!');
-	}
+	// models : db et models.item : item reprends le nom du champ dans la db
+	Eleve.associate = function (models) {
+	    models.eleves.belongsTo(models.users, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
+	};
+
 
 	return Eleve;
 };

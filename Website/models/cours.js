@@ -23,11 +23,15 @@ module.exports = (sequelize, DataTypes) => {
 		groupe: {
 			type: DataTypes.STRING
 		},
+		code_module_groupe: {
+			type: DataTypes.STRING
+		},
 		professeur: {
 			type: DataTypes.STRING
 		},
-		module_groupe: {
-			type: DataTypes.STRING
+		code_cours: {
+			type: DataTypes.STRING,
+			primaryKey: true
 		}
 	});
 

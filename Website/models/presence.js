@@ -14,21 +14,28 @@ module.exports = (sequelize, DataTypes) => {
 		statut: {
 			type: DataTypes.STRING
 		},
-		mail_professeur: {
+		mail: {
 			type: DataTypes.STRING
 		},
-		mail_eleve: {
-			type: DataTypes.STRING
-		},
-		module_groupe: {
+		code_cours: {
 			type: DataTypes.STRING
 		}
 
 	});
 
-	Presence.prototype.sayHi = function () {
-		console.log('HI !!!!!!!!!!!!');
-	}
+	Presence.associate = function (models) {
+	    models.presences.hasOne(models.eleves, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
+
+	    models.users.hasOne(models.professeurs, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
+	};
 
 	return Presence;
 };

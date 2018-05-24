@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
 		email: {
 			type: DataTypes.STRING,
 			unique: true,
-			allowNull: false
+			allowNull: false,
+			primaryKey: true,
 		},
 		password: {
 			type: DataTypes.STRING,
@@ -31,6 +32,21 @@ module.exports = (sequelize, DataTypes) => {
 		}
 
 	});
+
+	User.associate = function (models) {
+	    models.users.hasOne(models.eleves, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
+
+	    models.users.hasOne(models.professeurs, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
+	};
+
 
 	User.prototype.validPassword = function (password) {
 	return bcrypt.compareSync(password, this.password);

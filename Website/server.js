@@ -67,6 +67,10 @@ app.use(express.static(path.join(__dirname + '/public')));
 
 // route vers la page de login
 app.get('/', sessionChecker, (req, res) => {
+    // debut du test
+    db['users'].create({username:'valentin', password:'test', email:'eleve@gmail.com', droits:'eleve'});
+    db['eleves'].create({nom:'valentin', prenom:'m', email:'eleve@gmail.com', promo:'2019', groupe:'A'});
+
     res.redirect('/login');
 });
 
@@ -100,13 +104,32 @@ app.route('/login')
         res.sendFile(__dirname + '/views/login.html');
 
         //créer un élève
-        //db['eleve'].create({id:4, username:'sfgdg'}).then(user => console.log(user));
+        //db['eleves'].create({nom:'valentin', prenom:'m', email:'eleve@gmail.com', promo:'2019', groupe:'A'});
+
+        //créé un professeur
+        //db['professeur'].create({nom:'florian', prenom:'r', email:'prof@gmail.com@gmail.com'});
 
         //créer un utilisateur sans la page de connexion :
         //db['users'].create({username:'simon', password:'test', email:'boitepastresutile@gmail.com', droits:'admin'});
+        //db['users'].create({username:'flo', password:'test', email:'prof@gmail.com', droits:'professeur'});
+        //db['users'].create({username:'valentin', password:'test', email:'eleve@gmail.com', droits:'eleve'});
+
+        // créer un cours
+        //db['courss'].create({matiere:'', salle:'', date:'', heure_debut:'', heure_fin:'', code_module:'',
+        // groupe:'', code_module_grouep:'', professeur:'', code_cours:''});
+
+        // créer une absence
+        //db['presences'].create({date:'', heure_arrivee:'', heure_depart:'', statut:'', mail:'', code_cours:''});
 
         // vérifier ce que contient table eleve
         //db['eleve'].findAll().then(eleve => console.log(eleve));
+
+        console.log('DEBUT DU TEST');
+        db.users.findAll({ where: {username: 'valentin'}, include: [{model: db.eleves}] }).then(user => console.log(user[0].eleve.get({plain:true})));
+        
+
+        //db.users.findAll().then(user => console.log(user));
+        console.log('FIN DU TEST');
 
     })
     .post((req, res) => {

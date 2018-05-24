@@ -5,18 +5,30 @@ module.exports = (sequelize, DataTypes) => {
 		email: {
 			type: DataTypes.STRING,
 			unique: true,
+			allowNull: false,
+			primaryKey: true
 		},
 		nom: {
-			type: DataTypes.STRING
+			type: DataTypes.STRING,
+			allowNull: false
 		},
 		prenom: {
-			type: DataTypes.STRING
+			type: DataTypes.STRING,
+			allowNull: false
 		},
 	});
 
 	Professeur.prototype.sayHi = function () {
 		console.log('HI !!!!!!!!!!!!');
 	}
+
+	Professeur.associate = function (models) {
+	    models.professeurs.belongsTo(models.users, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
+	};
 
 	return Professeur;
 };
