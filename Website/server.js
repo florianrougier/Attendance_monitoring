@@ -8,7 +8,7 @@ var path = require('path');
 var fileUpload = require('express-fileupload');
 var xlsx = require('node-xlsx');
 var fs = require('fs');
-
+var nodemailer = require('nodemailer');
 
 // crée une instance d'express
 var app = express();
@@ -68,34 +68,11 @@ app.use(express.static(path.join(__dirname + '/public')));
 // route vers la page de login
 app.get('/', sessionChecker, (req, res) => {
     // debut du test
-    db['users'].create({username:'valentin', password:'test', email:'eleve@gmail.com', droits:'eleve'});
-    db['eleves'].create({nom:'valentin', prenom:'m', email:'eleve@gmail.com', promo:'2019', groupe:'A'});
+    db['users'].create({username:'valentin', password:'test', email:'eleve@gmail.com', droits:'admin'});
+    //db['eleves'].create({nom:'valentin', prenom:'m', email:'eleve@gmail.com', promo:'2019', groupe:'A'});
 
     res.redirect('/login');
 });
-
-/*
-// route pour la création d'un compte utilisateur
-app.route('/signup')
-    .get(sessionChecker, (req, res) => {
-	res.sendFile(__dirname + '/views/signup.html');
-    })
-    .post((req, res) => {
-	User.create({
-	    username: req.body.username,
-	    email: req.body.email,
-	    password: req.body.password
-	})
-	    .then(user => {
-		req.session.user = user.dataValues;
-		res.redirect('/AcceuilSession');
-	    })
-	    .catch(error => {
-           //marque message d'erreur
-		res.redirect('/login');
-	    });
-    });
-*/
 
 
 // route de la page de login
@@ -125,7 +102,7 @@ app.route('/login')
         //db['eleve'].findAll().then(eleve => console.log(eleve));
 
         console.log('DEBUT DU TEST');
-        db.users.findAll({ where: {username: 'valentin'}, include: [{model: db.eleves}] }).then(user => console.log(user[0].eleve.get({plain:true})));
+        //db.users.findAll({ where: {username: 'valentin'}, include: [{model: db.eleves}] }).then(user => console.log(user[0].eleve.get({plain:true})));
         
 
         //db.users.findAll().then(user => console.log(user));
@@ -179,6 +156,98 @@ app.get('/creerutilisateur', (req, res) => {
        res.redirect('/login');
     }
 });
+
+
+// route pour la création d'un compte utilisateur
+app.post('/creer_un_compte', (req, res) => {
+
+    console.log('DEBUT CREATION COMPTE');
+
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+
+       // check type de droits :
+       var droits = req.body.selection_droits;
+
+       if (droits === 'admin') {
+
+            db.users.create({
+                username: req.body.prenom,
+                droits: droits
+            })
+            .then(user => {
+                req.session.user = user.dataValues;
+
+                // send mail
+
+            })
+            .catch(error => {
+                //marque message d'erreur gui
+                console.log(error);
+            });
+
+
+       } else if (droits === 'professeur') {
+
+            db.users.create({
+                username: req.body.prenom,
+                droits: droits
+            })
+            .then(user => {
+                user.createprofesseurs({
+                    nom: req.body.nom,
+                    prenom: req.body.prenom
+                })
+
+                //req.session.user = user.dataValues;
+
+                // send mail
+
+            })
+            .catch(error => {
+                //marque message d'erreur gui
+                console.log(error);
+            });
+
+       } else if (droits === 'eleve') {
+            console.log("ON CREE UN ELEVE");
+            //var password_generator = require('generate-password');
+            //password_generated = password_generator.generate({length:8, numbers:true});
+
+            db.users.create({
+                username: req.body.prenom,
+                email: req.body.prenom + '.' + req.body.nom + '@epfedu.fr',
+                droits: droits,
+                //password: password_generated
+            })
+            .then(user => {
+                user.createEleve({
+                    nom: req.body.nom,
+                    prenom: req.body.prenom,
+                    promo: req.body.promotion,
+                    groupe: req.body.groupe
+                })
+
+                //req.session.user = user.dataValues;
+
+                // send mail
+
+            })
+            .then(() => console.log('ELEVE CREE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'))
+            .catch(error => {
+                //marque message d'erreur gui
+                console.log(error);
+            });
+
+       } else {
+            console.log('ATTENTTION, IL Y A EU UNE ERREUR DANS LA SELECTION DES DROITS !!!');
+       }
+
+    } else {
+       res.redirect('/login');
+    }
+    
+});
+
 
 // route vers la page de création d'utilisateur à partir d'un fichier
 app.get('/creerListUtilisateur', (req, res) => {

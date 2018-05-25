@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
 	<meta name="description" content="">
 
 	<title>EPF Présence</title>
@@ -17,6 +18,9 @@
 	<link href="/css/sb-admin.css" rel="stylesheet">
 
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
+
+	<script type="text/javascript" src="/vendor/angular/angular.js"></script>
+	<script type="text/javascript" src="/core.js"></script>
 
 </head>
 
@@ -107,41 +111,41 @@
 	</nav>
 
 
-	<div class="content-wrapper">
+	<div class="content-wrapper" ng-controller="mainController">
 		<div class="container-fluid">
 			<div >
 
 				<h1>Creer un utilisateur</h1>
 
-				<form class="row" action="/login" method="post">
+				<form class="row" action="/creer_un_compte" method="post">
 					
 						<div class="col-6">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Nom</label>
-								<input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Entrer le nom" name="username">
+								<input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Entrer le nom" name="nom">
 							</div>
 						</div>
 
 						<div class="col-6">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Prénom</label>
-								<input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Entrer le prénom" name="username">
+								<input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Entrer le prénom" name="prenom">
 							</div>
 						</div>
 	
 
 
-						<div class="col-6">
+						<div class="col-6" ng-show="myMenu == 'eleve'">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Promotion</label>
-								<input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Enter la promotion" name="username">
+								<input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Enter la promotion" name="promotion">
 							</div>
 						</div>
 
 						<div class="col-6">
-							<div class="form-group">
+							<div class="form-group" ng-show="myMenu == 'eleve'">
 								<label for="exampleInputEmail1">Groupe</label>
-								<input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Entrer le groupe" name="username">
+								<input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Entrer le groupe" name="groupe">
 							</div>
 						</div>
 					
@@ -151,11 +155,11 @@
 							<label class="input-group-text" for="inputGroupSelect01">Droits</label>
 						</div>
 
-						<select class="custom-select" id="inputGroupSelect01">
+						<select class="custom-select" id="inputGroupSelect01" name="selection_droits" ng-model="myMenu">
 							<option selected>Choisir...</option>
-							<option value="1">Elève</option>
-							<option value="2">Professeur</option>
-							<option value="3">Etudiant</option>
+							<option value="eleve">Elève</option>
+							<option value="professeur">Professeur</option>
+							<option value="admin">Etudiant</option>
 						</select>
 					</div>
 					
