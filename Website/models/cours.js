@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING
 		},
 		date: {
-			type: DataTypes.DATE // ou DATEONLY ?
+			type: DataTypes.DATEONLY // ou DATEONLY ?
 		},
 		heure_debut: {
 			type: DataTypes.TIME
 		},
 		heure_fin: {
-			type: DataTypes.DATE
+			type: DataTypes.TIME
 		},
 		code_module: {
 			type: DataTypes.STRING
@@ -31,8 +31,14 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		code_cours: {
 			type: DataTypes.STRING,
-			primaryKey: true
 		}
+	},{
+		hooks: {
+			beforeCreate: (cours) => {
+				cours.code_module_groupe = cours.code_module + cours.groupe + cours.code_cours;
+			}
+		}
+
 	});
 
 	Cours.prototype.sayHi = function () {

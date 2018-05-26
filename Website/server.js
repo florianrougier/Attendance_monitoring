@@ -91,9 +91,25 @@ app.route('/login')
         //db['users'].create({username:'flo', password:'test', email:'prof@gmail.com', droits:'professeur'});
         //db['users'].create({username:'valentin', password:'test', email:'eleve@gmail.com', droits:'eleve'});
 
+        var date_debut = new Date('2018-05-11T09:00:00Z');
+        var date_fin = new Date('2018-05-11T10:30:00Z');
+
+        var date_debut2 = new Date('2018-05-11T10:45:00Z');
+        var date_fin2 = new Date('2018-05-11T12:15:00Z');
+
         // créer un cours
-        //db['courss'].create({matiere:'', salle:'', date:'', heure_debut:'', heure_fin:'', code_module:'',
-        // groupe:'', code_module_grouep:'', professeur:'', code_cours:''});
+        db['courss'].create({matiere:'Algorithmique', salle:'I1', date:date_debut, heure_debut:date_debut, code_module:'MSFGE1ME01',
+                             heure_fin:date_fin, groupe:'AA', professeur:'prof.A@epfedu.fr', code_cours:'1'});
+
+        db['courss'].create({matiere:'Projet Web', salle:'1L', date:date_debut, heure_debut:date_debut, heure_fin:date_fin,
+                             code_module:'MSAPP1IN09', groupe:'AB', professeur:'prof.B@epfedu.fr', code_cours:'1'});
+
+        db['courss'].create({matiere:'Algorithmique', salle:'2L', date:date_debut2, heure_debut:date_debut2, heure_fin:date_fin2,
+                             code_module:'MSFGE1ME01', groupe:'AC', professeur:'prof.A@epfedu.fr', code_cours:'2'});
+
+        db['courss'].create({matiere:'Algorithmique', salle:'2L', date:date_debut2, heure_debut:date_debut2, heure_fin:date_fin2,
+                             code_module:'MSFGE1ME01', groupe:'AC', professeur:'prof.C@epfedu.fr', code_cours:'2'});
+        
 
         // créer une absence
         //db['presences'].create({date:'', heure_arrivee:'', heure_depart:'', statut:'', mail:'', code_cours:''});
@@ -104,7 +120,6 @@ app.route('/login')
         console.log('DEBUT DU TEST');
         //db.users.findAll({ where: {username: 'valentin'}, include: [{model: db.eleves}] }).then(user => console.log(user[0].eleve.get({plain:true})));
         
-
         //db.users.findAll().then(user => console.log(user));
         console.log('FIN DU TEST');
 
@@ -125,9 +140,16 @@ app.route('/login')
         });
     });
 
+app.get('/pre', (req,res) => {
+    db.courss.findAll({ raw: true }).then( (cours) => res.json(cours));
+});
 
 // route vers la page d'acceuil
 app.get('/AcceuilSession', (req, res) => {
+    //test en cours
+    db.courss.findAll({ raw: true }).then(console.log);
+
+
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 	   res.sendFile(__dirname + '/views/administrationn/AcceuilSession.html');
     } else if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'professeur') {

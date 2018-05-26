@@ -18,7 +18,8 @@
 
 	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/js/bootstrap.min.js" />
 
-	<script type="text/javascript" src=""></script>
+	<script type="text/javascript" src="/vendor/angular/angular.js"></script>
+	<script type="text/javascript" src="/core.js"></script>
 
 </head>
 
@@ -123,12 +124,14 @@
 	</nav>
 
 
-	<div class="content-wrapper">
+	<div class="content-wrapper" ng-controller="mainController">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
 					<h1>Titre de section</h1>
 					<p>contenu de la page (mettre tableau de la bdd ici)</p>
+					{{cours.length}}
+					<div ng-repeat="cour in cours">{{cour.salle}}</div>
 				</div>
 			</div>
 		</div>

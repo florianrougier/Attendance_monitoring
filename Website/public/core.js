@@ -19,10 +19,13 @@ function mainController($scope, $http) {
 
 
 	// get pour récupérer les informations puis les afficher
-	$http.get('/route...')
+	$http.get('/pre')
 		.success(function(data) {
 			// logique de la fonction
 			// $scope.nom_var_to_display = data;
+			$scope.cours = data;
+			console.log('data : ' + data);
+			console.log(data);
 		})
 		.error(function(data) {
 			// afficher l'erreur dans le gui
