@@ -32,6 +32,20 @@ function mainController($scope, $http) {
 			console.log('Erreur : ' + data)
 		});
 
+
+	// get pour récupérer la liste des utilisateurs
+	$http.get('/getListeUtilisateurs')
+		.success(function(data) {
+			// logique de la fonction
+			// $scope.nom_var_to_display = data;
+			$scope.users = data;
+			console.log(data);
+		})
+		.error(function(data) {
+			// afficher l'erreur dans le gui
+			console.log('Erreur : ' + data)
+		});
+
 	// crééer un élément dans une table
 	/*
 	$scope.createBLABLA function () {

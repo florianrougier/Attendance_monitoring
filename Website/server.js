@@ -9,6 +9,7 @@ var fileUpload = require('express-fileupload');
 var xlsx = require('node-xlsx');
 var fs = require('fs');
 var nodemailer = require('nodemailer');
+var schedule = require('node-schedule'); // job scheduler
 
 // crée une instance d'express
 var app = express();
@@ -30,6 +31,17 @@ app.use(fileUpload());
 
 // initialize express-session to allow us track the logged-in user across sessions.
 var idleTimeoutSeconds = 600;
+
+// =========================
+// a utiliser plus tard pour programmer la maj des status des étudiants absents et l'envoie de fichiers à l'administration
+
+// https://www.npmjs.com/package/node-schedule
+
+/*
+var j = schedule.scheduleJob('5 * * * * *', function(){
+  console.log('The answer to life, the universe, and everything!');
+});
+*///========================
 
 // options du cookie de session
 app.use(session({
@@ -69,7 +81,8 @@ app.use(express.static(path.join(__dirname + '/public')));
 app.get('/', sessionChecker, (req, res) => {
     // debut du test
     db['users'].create({username:'valentin', password:'test', email:'eleve@gmail.com', droits:'admin'});
-    //db['eleves'].create({nom:'valentin', prenom:'m', email:'eleve@gmail.com', promo:'2019', groupe:'A'});
+    db['users'].create({username:'simon', password:'test', email:'simon.negrier@gmail.com', droits:'eleve'});
+    db['eleves'].create({nom:'negrier', prenom:'simon', email:'simon.negrier@gmail.com', promo:'2019', groupe:'AA'});
 
     res.redirect('/login');
 });
@@ -112,7 +125,7 @@ app.route('/login')
         
 
         // créer une absence
-        //db['presences'].create({date:'', heure_arrivee:'', heure_depart:'', statut:'', mail:'', code_cours:''});
+        //db['presences'].create({heure_arrivee:'', heure_depart:'', statut:'', mail:'', code_cours:''});
 
         // vérifier ce que contient table eleve
         //db['eleve'].findAll().then(eleve => console.log(eleve));
@@ -164,7 +177,7 @@ app.get('/AcceuilSession', (req, res) => {
 // route vers la page d'administration
 app.get('/administration', (req, res) => {
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
-       res.sendFile(__dirname + '/views/administration.html');
+       res.sendFile(__dirname + '/views/administrationn/administration.html');
     } else {
        res.redirect('/login');
     }
@@ -332,6 +345,26 @@ app.post('/uploadFileUtilisateurs', function(req, res) {
 
 });
 
+
+// route vers la page de la liste des utilisateurs
+app.get('/listeUtilisateurs', (req, res) => {
+    console.log('on est la');
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+       res.sendFile(__dirname + '/views/administrationn/listeUtilisateurs.html');
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/getListeUtilisateurs', (req,res) => {
+    db.users.findAll({ include: [{model:db.eleves}]})
+        .then( (user) => {
+            console.log(user);
+            console.log("SUITE");
+            console.log(JSON.stringify(user));
+            res.json(user);
+    });
+});
 
 // route vers la page de présence / d'absence
 app.get('/presence', (req, res) => {

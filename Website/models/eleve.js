@@ -29,6 +29,12 @@ module.exports = (sequelize, DataTypes) => {
 	    	foreignKey: 'email',
 	    	constraints: false
 	    });
+
+	    models.eleves.hasMany(models.presences, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
 	};
 
 

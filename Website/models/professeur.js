@@ -18,9 +18,6 @@ module.exports = (sequelize, DataTypes) => {
 		},
 	});
 
-	Professeur.prototype.sayHi = function () {
-		console.log('HI !!!!!!!!!!!!');
-	}
 
 	Professeur.associate = function (models) {
 	    models.professeurs.belongsTo(models.users, {
@@ -28,7 +25,24 @@ module.exports = (sequelize, DataTypes) => {
 	    	foreignKey: 'email',
 	    	constraints: false
 	    });
+
+	    models.professeurs.hasMany(models.presences, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
+
+	    models.professeurs.hasMany(models.courss, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
 	};
+
+
+	Professeur.prototype.sayHi = function () {
+		console.log('HI !!!!!!!!!!!!');
+	}
 
 	return Professeur;
 };

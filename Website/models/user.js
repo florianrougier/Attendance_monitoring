@@ -116,11 +116,23 @@ module.exports = (sequelize, DataTypes) => {
 
 
 	User.prototype.validPassword = function (password) {
-	return bcrypt.compareSync(password, this.password);
+		return bcrypt.compareSync(password, this.password);
 	}
 
-	User.prototype.sayHi = function () {
-		console.log(this.username);
+	// A ECRIRE
+	// le prof doit pouvoir exclure un utilisateur
+	User.prototype.exclureEleve = function () {
+		if (this.droits === 'professeur') {
+
+		}
+	}
+
+	// A ECRIRE
+	// l'administration doit pouvoir modifier le statut de présence d'un élève
+	User.prototype.modifierStatusUser = function () {
+		if (this.droits === 'admin') {
+
+		}
 	}
 
 	return User;

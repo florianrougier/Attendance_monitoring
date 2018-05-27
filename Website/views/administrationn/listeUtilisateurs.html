@@ -18,6 +18,9 @@
 
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
 
+	<script type="text/javascript" src="/vendor/angular/angular.js"></script>
+	<script type="text/javascript" src="/core.js"></script>
+
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark">
@@ -56,6 +59,20 @@
 				<a class="nav-link" href="/presence">
 					<i class="fa fa-fw fa-table"></i>
 					<span class="nav-link-text">Absences</span>
+				</a>
+			</li>
+
+			<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+				<a class="nav-link" href="/presence">
+					<i class="fa fa-fw fa-calendar"></i>
+					<span class="nav-link-text">EDT</span>
+				</a>
+			</li>
+
+			<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+				<a class="nav-link" href="/presence">
+					<i class="fa fa-fw fa-table"></i>
+					<span class="nav-link-text">Exporter pour ELISA</span>
 				</a>
 			</li>
 
@@ -107,33 +124,36 @@
 	</nav>
 
 
-	<div class="content-wrapper">
+	<div class="content-wrapper" ng-controller="mainController">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
 					<h1>Administration des utilisateurs</h1>
 					<p>on gere les droits des utilisateur</p>
 
-					<div>
-		            	<a class="btn btn-primary btn-block" href="/creerutilisateur" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235) ;color: black; margin-bottom: 5px;">créer un utilisateur</a>
-		            </div>
+					<table>
+						<thead>
+							<tr>
+								<td>Nom</td>
+								<td>Prenom</td>
+								<td>Mail</td>
+								<td>droits</td>
+							</tr>
+						</thead>
 
-		            <div>
-		            	<a class="btn btn-primary btn-block" href="/creerListUtilisateur" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px; color: black;">ajouter une liste d'utilisateurs</a>
-		            </div>
+						<tbody>
+							<tr ng-repeat="user in users">
+								<!--<td>{{user.nom}}</td>
+								<td>{{user.prenom}}</td>-->
+								<td>{{user.mail}}</td>
+								<td>{{user.droits}}</td>
+							</tr>
+						</tbody>
 
-		            <div>
+					</table>
+					
+					
 
-		            <a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">supprimer un utilisateur</a>
-		            </div>
-
-		            <div>
-		            	<a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">modifier les droits d'un utilisateur</a>
-		            </div>
-
-		            <div>
-		            	<a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">supprimer une liste d'utilisateur</a>
-		            </div>
 
 				</div>
 			</div>
