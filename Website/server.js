@@ -348,7 +348,6 @@ app.post('/uploadFileUtilisateurs', function(req, res) {
 
 // route vers la page de la liste des utilisateurs
 app.get('/listeUtilisateurs', (req, res) => {
-    console.log('on est la');
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
        res.sendFile(__dirname + '/views/administrationn/listeUtilisateurs.html');
     } else {
@@ -356,15 +355,38 @@ app.get('/listeUtilisateurs', (req, res) => {
     }
 });
 
+// renvoie la liste des utilisateurs pour l'affichage
 app.get('/getListeUtilisateurs', (req,res) => {
-    db.users.findAll({ include: [{model:db.eleves}]})
-        .then( (user) => {
-            console.log(user);
-            console.log("SUITE");
-            console.log(JSON.stringify(user));
-            res.json(user);
-    });
+
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+
+        db.users.findAll({ include: [{model:db.eleves}]})
+            .then( (user) => {
+                console.log(JSON.stringify(user));
+                res.send(JSON.stringify(user));
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+    
 });
+
+// supprime l'utilisateur demandé
+app.delete('/supprimerUnUtilisateur:email', (req, res, ) => {
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+       
+        db.users.destroy({where: {email: req.params.email}}).then(() => {
+            db.users.findAll().then((users) => {res.json(users)});
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+
+});
+
+
 
 // route vers la page de présence / d'absence
 app.get('/presence', (req, res) => {

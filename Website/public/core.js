@@ -61,20 +61,18 @@ function mainController($scope, $http) {
 			});
 	};
 		
-
+	*/
 	// supprimer un élément d'un table
-	$scope.deleteBLABLA('/route...') {
-		$http.delete('route')
+	$scope.supprimerUnUtilisateur = function(email) {
+		$http.delete('/supprimerUnUtilisateur' + email)
 			.success(function(data) {
-				// logique de la fonction
-				$scope.blabal = data;
-				//
+				$scope.users = data;
 			})
 			.error(function(data) {
 				console.log('Erreur : ' + data)
 			});
 	};
-	*/
-		
-
-}
+	
+			
+			
+	};

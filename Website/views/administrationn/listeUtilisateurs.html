@@ -34,7 +34,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		<div style="margin-left: 10em; color: white; font-size: 1.5em;">Tableau de bord</div>
+		<div style="margin-left: 10em; color: white; font-size: 1.5em;">Administration des utilisateurs</div>
 
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav navbar-sidenav" id="exampleAccordion" style="background-color: rgb(228,231,235) !important;>
@@ -128,10 +128,9 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
-					<h1>Administration des utilisateurs</h1>
-					<p>on gere les droits des utilisateur</p>
+					<h1>Liste des utilisateurs</h1>
 
-					<table>
+					<table class="table">
 						<thead>
 							<tr>
 								<td>Nom</td>
@@ -143,10 +142,11 @@
 
 						<tbody>
 							<tr ng-repeat="user in users">
-								<!--<td>{{user.nom}}</td>
-								<td>{{user.prenom}}</td>-->
-								<td>{{user.mail}}</td>
+								<td>{{user.eleve.nom}}</td>
+								<td>{{user.eleve.prenom}}</td>
+								<td>{{user.email}}</td>
 								<td>{{user.droits}}</td>
+								<td style="color: red; cursor: pointer;" ng-click="supprimerUnUtilisateur(user.email)">Supprimer</td>
 							</tr>
 						</tbody>
 
