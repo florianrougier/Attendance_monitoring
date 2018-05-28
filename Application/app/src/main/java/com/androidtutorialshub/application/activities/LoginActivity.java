@@ -15,6 +15,7 @@ import com.androidtutorialshub.application.R;
 import com.androidtutorialshub.application.helpers.InputValidation;
 import com.androidtutorialshub.application.data.DatabaseHelper;
 import com.androidtutorialshub.application.service.SynchroService;
+import com.pushbots.push.Pushbots;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final AppCompatActivity activity = LoginActivity.this;
@@ -39,6 +40,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
+
+        //Register for Push Notifications
+        Pushbots.sharedInstance().registerForRemoteNotifications();
 
         initViews();
         initListeners();
@@ -119,10 +123,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
                 , textInputEditTextPassword.getText().toString().trim())) {
 
-            // TODO: REPLACE BY THE ONE BELOW
             Intent accountsIntent = new Intent(activity, MenuTeacherActivity.class);
             accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
+            // Set alias on pushbots server, so that this device could receive the notification
+            // Here we need to retrieve the card id of the corresponding user with a get request
+
+            Pushbots.sharedInstance().tag("test2");
             startActivity(accountsIntent);
 
 
