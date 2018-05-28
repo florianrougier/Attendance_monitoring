@@ -32,7 +32,7 @@
     <string name="tab_text_2_teacher">Mes présences</string>
     <string name="tab_text_3">Mon compte</string>
     <string name="tab_text_4">Exclure un élève</string>
-    <string name="send_password">Envoyer le mot de passe</string>
+    <string name="send_password">Envoyer le code</string>
     <string name="information">
         1) Passes ta carte NFC près du lecteur pour t\'identifier\n\n
         2) Tapes le code reçu sur l\'application (attention au timer)\n

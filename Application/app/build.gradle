@@ -9,6 +9,12 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+                manifestApplicationId         : "${applicationId}",
+                pushbots_app_id               : "5b0863231db2dc08000910e2",
+                pushbots_loglevel             : "DEBUG",
+                google_sender_id              : "310738188786"
+        ]
     }
     buildTypes {
         release {
@@ -30,4 +36,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
     compile 'com.squareup.retrofit2:converter-gson:2.4.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.google.android.gms:play-services-gcm:15.0.1'
+    compile 'com.pushbots:pushbots-lib:3.1.4@aar'
 }
