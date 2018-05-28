@@ -129,6 +129,47 @@
 		            <a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">Rechercher une personne</a>
 		            </div>
 
+
+
+		            <table class="table">
+						<thead>
+							<tr>
+								<td>Nom Absent</td>
+								<td>Prénom Absent</td>
+								<td>Module</td>
+								<td>Jour</td>
+								<td>Date</td>
+								<td>Début</td>
+								<td>Fin</td>
+								<td>Code</td>
+								<td>Prénom Prof</td>
+								<td>Nom Prof</td>
+								<td>Motif</td>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr ng-repeat="presence in presences">
+								<td>{{presence.eleve.nom}}</td>
+								<td>{{presence.eleve.prenom}}</td>
+								<td>{{presence.cours.module}}</td>
+								<td>{{presence.cours.date}}</td>
+								<td>{{presence.cours.date}}</td>
+								<td>{{presence.cours.heure_debut}}</td>
+								<td>{{presence.cours.heure_fin}}</td>
+								<td>{{presence.cours.code_module_groupe}}</td>
+								<td>{{presence.professeur.prenom}}</td>
+								<td>{{presence.professeur.statut}}</td>
+								<td style="color: red; cursor: pointer;" ng-click="">Supprimer</td>
+							</tr>
+						</tbody>
+
+					</table>
+
+
+
+
+
 				</div>
 			</div>
 		</div>

@@ -10,7 +10,6 @@ function mainController($scope, $http) {
 
 	// ========== TODO : ==============
 	// get les informations de présence
-	// delete utilisateur
 	// delete absence
 	// post status
 	// create user
@@ -18,11 +17,12 @@ function mainController($scope, $http) {
 	// delete cours
 
 
+
+
+/*
 	// get pour récupérer les informations puis les afficher
 	$http.get('/pre')
 		.success(function(data) {
-			// logique de la fonction
-			// $scope.nom_var_to_display = data;
 			$scope.cours = data;
 			console.log('data : ' + data);
 			console.log(data);
@@ -31,20 +31,30 @@ function mainController($scope, $http) {
 			// afficher l'erreur dans le gui
 			console.log('Erreur : ' + data)
 		});
-
+*/
 
 	// get pour récupérer la liste des utilisateurs
 	$http.get('/getListeUtilisateurs')
 		.success(function(data) {
-			// logique de la fonction
-			// $scope.nom_var_to_display = data;
 			$scope.users = data;
+			console.log(data);
+		})
+		.error(function(data) {
+			console.log('Erreur : ' + data)
+		});
+
+/*
+	// get pour récupérer la liste des présences/absences
+	$http.get('/getListePresences')
+		.success(function(data) {
+			$scope.presences = data;
 			console.log(data);
 		})
 		.error(function(data) {
 			// afficher l'erreur dans le gui
 			console.log('Erreur : ' + data)
 		});
+*/
 
 	// crééer un élément dans une table
 	/*

@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 		code_module_groupe: {
 			type: DataTypes.STRING
 		},
-		professeur: {
+		professeur_cours: {
 			type: DataTypes.STRING
 		},
 		code_cours: {
@@ -41,33 +41,28 @@ module.exports = (sequelize, DataTypes) => {
 
 	});
 
-
 	Cours.associate = function (models) {
 	    models.courss.hasMany(models.presences, {
 	    	//onDelete: "CASCADE",
 	    	foreignKey: 'code_module_groupe',
+	    	sourceKey: 'code_module_groupe',
 	    	constraints: false
 	    });
-
+/*
 	    models.courss.belongsToMany(models.eleves, {
 	    	//onDelete: "CASCADE",
-	    	through: 'courss_eleves',
+	    	as: '',
+	    	through : ,
 	    	foreignKey: 'code_module_groupe',
 	    	constraints: false
-	    });
+	    });*/
 
 	    models.courss.belongsTo(models.professeurs, {
 	    	//onDelete: "CASCADE",
-	    	as: 'professeur_cours',
-	    	foreignKey: 'email',
+	    	foreignKey: 'professeur_cours',
 	    	constraints: false
 	    });
 	};
-
-
-	Cours.prototype.sayHi = function () {
-		console.log('HI !!!!!!!!!!!!');
-	}
 
 	return Cours;
 };

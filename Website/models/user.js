@@ -55,13 +55,14 @@ module.exports = (sequelize, DataTypes) => {
 				
 			},
 			afterCreate: (user) => {
-				var transporter = nodemailer.createTransport({
+				/*var transporter = nodemailer.createTransport({
 			        service: 'Outlook365',
 			        auth: {
 			            user: 'simon.negrier@epfedu.fr',
 			            pass: 'StupidEKeV91.@'
 			        }
 			    });
+				*/
 
 				//console.log("INFOS : ");
 				//console.log(user.getEleve());
@@ -93,8 +94,6 @@ module.exports = (sequelize, DataTypes) => {
 			            console.log('Email sent: ' + info.response);
 			        }
 			    });*/
-
-			    console.log('fin du test \n');
 			}
 		}
 
@@ -108,6 +107,12 @@ module.exports = (sequelize, DataTypes) => {
 	    });
 
 	    models.users.hasOne(models.professeurs, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	constraints: false
+	    });
+
+	    models.users.hasOne(models.admins, {
 	    	//onDelete: "CASCADE",
 	    	foreignKey: 'email',
 	    	constraints: false

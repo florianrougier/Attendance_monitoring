@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 		statut: {
 			type: DataTypes.STRING
 		},
-		mail: {
+		id_carte: {
 			type: DataTypes.STRING
 		},
 		code_module_groupe: {
@@ -21,15 +21,16 @@ module.exports = (sequelize, DataTypes) => {
 	});
 
 	Presence.associate = function (models) {
-	    models.presences.hasOne(models.eleves, {
+	    models.presences.belongsTo(models.eleves, {
 	    	//onDelete: "CASCADE",
-	    	foreignKey: 'email',
+	    	foreignKey: 'id_carte',
+
 	    	constraints: false
 	    });
 
-	    models.presences.hasOne(models.professeurs, {
+	    models.presences.belongsTo(models.professeurs, {
 	    	//onDelete: "CASCADE",
-	    	foreignKey: 'email',
+	    	foreignKey: 'id_carte',
 	    	constraints: false
 	    });
 

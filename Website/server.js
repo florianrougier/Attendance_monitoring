@@ -79,10 +79,49 @@ app.use(express.static(path.join(__dirname + '/public')));
 
 // route vers la page de login
 app.get('/', sessionChecker, (req, res) => {
-    // debut du test
-    db['users'].create({username:'valentin', password:'test', email:'eleve@gmail.com', droits:'admin'});
+
+    // création admin ===================================
+    db['users'].create({username:'valentin', password:'test', email:'valentin.m@gmail.com', droits:'admin'});
+    db['admins'].create({nom:'m', prenom:'valentin', email:'valentin.m@gmail.com'});
+
+    // création de professeurs ==========================
+    db['users'].create({username:'flo', password:'test', email:'flo.aaa@gmail.com', droits:'professeur'});
+    db['professeurs'].create({nom:'flo', prenom:'m', email:'flo.aaa@gmail.com'});
+
+    db['users'].create({username:'profA', password:'test', email:'prof.A@epfedu.fr', droits:'professeur'});
+    db['professeurs'].create({nom:'prof', prenom:'A', email:'prof.A@epfedu.fr'});
+
+    db['users'].create({username:'profB', password:'test', email:'prof.B@epfedu.fr', droits:'professeur'});
+    db['professeurs'].create({nom:'prof', prenom:'B', email:'prof.B@epfedu.fr'});
+
+    db['users'].create({username:'profC', password:'test', email:'prof.C@epfedu.fr', droits:'professeur'});
+    db['professeurs'].create({nom:'prof', prenom:'C', email:'prof.C@epfedu.fr'});
+
+    // création d'élèves =================================
     db['users'].create({username:'simon', password:'test', email:'simon.negrier@gmail.com', droits:'eleve'});
-    db['eleves'].create({nom:'negrier', prenom:'simon', email:'simon.negrier@gmail.com', promo:'2019', groupe:'AA'});
+    db['eleves'].create({nom:'negrier', prenom:'simon', email:'simon.negrier@gmail.com', promo:'2019', groupe:'AA', id_carte:'12345'});
+
+    db['users'].create({username:'martin', password:'test', email:'martin.dupont@gmail.com', droits:'eleve'});
+    db['eleves'].create({nom:'dupont', prenom:'martin', email:'martin.dupont@gmail.com', promo:'2019', groupe:'AB'});
+
+    console.log("CREATION DES presences");
+    var date_arrivee = new Date('2018-05-11T09:07:00Z');
+    var date_depart = new Date('2018-05-11T10:32:00Z');
+
+    db['presences'].create({heure_arrivee:date_arrivee, heure_depart:date_depart, statut:'Absent', id_carte:'12345',
+                            code_module_groupe:'MSFGE1ME01AA1'});
+
+    db['presences'].create({heure_arrivee:date_arrivee, heure_depart:date_depart, statut:'Présent', id_carte:'12345',
+                            code_module_groupe:'MSFGE1ME01AA1'});
+
+    db['presences'].create({heure_arrivee:date_arrivee, heure_depart:date_depart, statut:'Présent', id_carte:'12345',
+                            code_module_groupe:'MSFGE1ME01AAAA1'});
+
+    var date_debut = new Date('2018-05-11T09:00:00Z');
+    var date_fin = new Date('2018-05-11T10:30:00Z');
+
+    db['courss'].create({matiere:'Algorithmique', salle:'I1', date:date_debut, heure_debut:date_debut, code_module:'MSFGE1ME01AA',
+                             heure_fin:date_fin, groupe:'AA', professeur_cours:'prof.A@epfedu.fr', code_cours:'1'});
 
     res.redirect('/login');
 });
@@ -92,18 +131,7 @@ app.get('/', sessionChecker, (req, res) => {
 app.route('/login')
     .get(sessionChecker, (req, res) => {
         res.sendFile(__dirname + '/views/login.html');
-
-        //créer un élève
-        //db['eleves'].create({nom:'valentin', prenom:'m', email:'eleve@gmail.com', promo:'2019', groupe:'A'});
-
-        //créé un professeur
-        //db['professeur'].create({nom:'florian', prenom:'r', email:'prof@gmail.com@gmail.com'});
-
-        //créer un utilisateur sans la page de connexion :
-        //db['users'].create({username:'simon', password:'test', email:'boitepastresutile@gmail.com', droits:'admin'});
-        //db['users'].create({username:'flo', password:'test', email:'prof@gmail.com', droits:'professeur'});
-        //db['users'].create({username:'valentin', password:'test', email:'eleve@gmail.com', droits:'eleve'});
-
+/*
         var date_debut = new Date('2018-05-11T09:00:00Z');
         var date_fin = new Date('2018-05-11T10:30:00Z');
 
@@ -124,17 +152,36 @@ app.route('/login')
                              code_module:'MSFGE1ME01', groupe:'AC', professeur:'prof.C@epfedu.fr', code_cours:'2'});
         
 
-        // créer une absence
-        //db['presences'].create({heure_arrivee:'', heure_depart:'', statut:'', mail:'', code_cours:''});
+        // créer une présence / absence
+        var date_arrivee = new Date('2018-05-11T09:07:00Z');
+        var date_depart = new Date('2018-05-11T10:32:00Z');
 
-        // vérifier ce que contient table eleve
-        //db['eleve'].findAll().then(eleve => console.log(eleve));
+        db['presences'].create({heure_arrivee:date_arrivee, heure_depart:date_depart, statut:'Absent', email:'simon.negrier@gmail.com',
+                                code_module_groupe:'MSFGE1ME01AA1'});*/
 
-        console.log('DEBUT DU TEST');
-        //db.users.findAll({ where: {username: 'valentin'}, include: [{model: db.eleves}] }).then(user => console.log(user[0].eleve.get({plain:true})));
-        
-        //db.users.findAll().then(user => console.log(user));
-        console.log('FIN DU TEST');
+        // tests de récupération de présences
+        db.users.findOne({where: {username: 'simon'}, include: [{model:db.eleves, include: [{model: db.presences}]}]})
+        .then((user) => console.log('\n\n\n\n\n\n' + 'liste des éléèves avec présences et cours 11111' + JSON.stringify(user)) + '\n\n\n\n\n');
+
+        db.eleves.findOne({where: {prenom: 'simon'}, include: [{model: db.presences}]})
+        .then((user) => console.log('\n\n\n\n\n\n' + 'liste des eleves avec présence 222222' + JSON.stringify(user)) + '\n\n\n\n\n');
+
+        db.eleves.findOne({where: {prenom: 'simon'}})
+        .then((user) => user.getPresences()).then(user => console.log('\n\n\n\n\n\n' + 'liste des eleves 33333\n' + JSON.stringify(user)) + '\n\n\n\n\n');
+
+        // test de récupérations des cours et des professeurs
+        db.courss.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.professeurs}]})
+        .then((cours) => console.log('\n\n\n\n\n\n' + 'liste des cours 44444\n' + JSON.stringify(cours)) + '\n\n\n\n\n');
+
+        db.professeurs.findOne({where: {email: 'prof.A@epfedu.fr'}, include: [{model: db.courss}]})
+        .then((professeur) => console.log('\n\n\n\n\n\n' + 'liste des professeurs 555555\n' + JSON.stringify(professeur)) + '\n\n\n\n\n');
+
+        db.presences.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}})
+        .then((presence) => console.log('\n\n\n\n\n\n' + 'liste des presences 666666\n' + JSON.stringify(presence)) + '\n\n\n\n\n\n');
+
+        db.courss.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.presences}]})
+        .then((cours) => console.log('\n\n\n\n\n\n' + 'liste des presences 777777\n' + JSON.stringify(cours)) + '\n\n\n\n\n\n');
+
 
     })
     .post((req, res) => {
@@ -153,15 +200,14 @@ app.route('/login')
         });
     });
 
+/*
 app.get('/pre', (req,res) => {
     db.courss.findAll({ raw: true }).then( (cours) => res.json(cours));
 });
+*/
 
 // route vers la page d'acceuil
 app.get('/AcceuilSession', (req, res) => {
-    //test en cours
-    db.courss.findAll({ raw: true }).then(console.log);
-
 
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 	   res.sendFile(__dirname + '/views/administrationn/AcceuilSession.html');
@@ -195,8 +241,6 @@ app.get('/creerutilisateur', (req, res) => {
 
 // route pour la création d'un compte utilisateur
 app.post('/creer_un_compte', (req, res) => {
-
-    console.log('DEBUT CREATION COMPTE');
 
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 
@@ -244,7 +288,6 @@ app.post('/creer_un_compte', (req, res) => {
             });
 
        } else if (droits === 'eleve') {
-            console.log("ON CREE UN ELEVE");
             //var password_generator = require('generate-password');
             //password_generated = password_generator.generate({length:8, numbers:true});
 
@@ -267,7 +310,6 @@ app.post('/creer_un_compte', (req, res) => {
                 // send mail
 
             })
-            .then(() => console.log('ELEVE CREE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'))
             .catch(error => {
                 //marque message d'erreur gui
                 console.log(error);
@@ -360,9 +402,8 @@ app.get('/getListeUtilisateurs', (req,res) => {
 
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 
-        db.users.findAll({ include: [{model:db.eleves}]})
+        db.users.findAll({ include: [{model:db.eleves},{model:db.admins},{model:db.professeurs}]})
             .then( (user) => {
-                console.log(JSON.stringify(user));
                 res.send(JSON.stringify(user));
         });
 
@@ -377,7 +418,7 @@ app.delete('/supprimerUnUtilisateur:email', (req, res, ) => {
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
        
         db.users.destroy({where: {email: req.params.email}}).then(() => {
-            db.users.findAll().then((users) => {res.json(users)});
+            db.users.findAll({ include: [{model:db.eleves},{model:db.admins},{model:db.professeurs}]}).then((users) => {res.json(users)});
         });
 
     } else {
@@ -400,6 +441,24 @@ app.get('/presence', (req, res) => {
         res.redirect('/login');
     }
 });
+
+/*
+// renvoie la liste des présences pour l'affichage
+app.get('/getListePresences', (req,res) => {
+
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+
+        db.presences.findAll({ include: [{model:db.eleves},{model:db.courss},{model:db.professeurs}]})
+            .then( (presences) => {
+                res.send(JSON.stringify(presences));
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+    
+});
+*/
 
 // route pour le logout
 app.get('/logout', (req, res) => {

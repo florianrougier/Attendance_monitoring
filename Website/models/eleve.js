@@ -14,9 +14,12 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING
 		},
 		promo: {
-			type: DataTypes.INTEGER
+			type: DataTypes.STRING
 		},
 		groupe: {
+			type: DataTypes.STRING
+		},
+		id_carte: {
 			type: DataTypes.STRING
 		}
 
@@ -32,9 +35,11 @@ module.exports = (sequelize, DataTypes) => {
 
 	    models.eleves.hasMany(models.presences, {
 	    	//onDelete: "CASCADE",
-	    	foreignKey: 'email',
+	    	foreignKey: 'id_carte',
+	    	sourceKey: 'id_carte',
 	    	constraints: false
 	    });
+
 	};
 
 
