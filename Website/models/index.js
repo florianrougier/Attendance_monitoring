@@ -2,12 +2,21 @@ var Sequelize = require('sequelize');
 var bcrypt = require('bcrypt');
 
 // crée une instance sequelize avec les informations de la base de donnée locale
-var sequelize = new Sequelize('postgres://postgres@localhost:5432/projetmin', {
+var sequelize = new Sequelize('postgres://postgres:saucisson@localhost:5432/projetmintest', {
 	dialect: 'postgres',
 	operatorsAliases: false,
 	define: {
         timestamps: false
-     }
+     },
+
+  // you can either write to console
+  //logging: console.log
+
+  // or write your own custom logging function
+  logging: function (str) {
+    console.log ('\n' + str + '\n');
+    // do stuff with the sql str
+  }
 });
 
 db = {};
@@ -30,9 +39,9 @@ Object.keys(db).forEach(modelName => {
 
 
 // crée toutes les tables déinies dans la base de donnée (sync : synchronise les modèles et les tables de la bdd)
-sequelize.sync({force:true})
-    .then(() => console.log('users table has been successfully created, if one doesn\'t exist'))
-    .catch(error => console.log('This error occured', error));
+sequelize.sync({logging:false})
+    .then(() => console.log('Les tables ont été créées sans problème ou ont été récupérées si elles existaient déjà'))
+    .catch(error => console.log('Cette erreur s\'est produite : \n', error));
 
 
 // exporte les tables de la bdd pour le utiliser dans d'autres modules

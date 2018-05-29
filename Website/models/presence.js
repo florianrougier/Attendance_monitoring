@@ -22,20 +22,16 @@ module.exports = (sequelize, DataTypes) => {
 
 	Presence.associate = function (models) {
 	    models.presences.belongsTo(models.eleves, {
-	    	//onDelete: "CASCADE",
 	    	foreignKey: 'id_carte',
-
 	    	constraints: false
 	    });
 
 	    models.presences.belongsTo(models.professeurs, {
-	    	//onDelete: "CASCADE",
 	    	foreignKey: 'id_carte',
 	    	constraints: false
 	    });
 
 	    models.presences.belongsTo(models.courss, {
-	    	//onDelete: "CASCADE",
 	    	foreignKey: 'code_module_groupe',
 	    	constraints: false
 	    });

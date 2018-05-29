@@ -42,10 +42,11 @@ module.exports = (sequelize, DataTypes) => {
 	});
 
 	Cours.associate = function (models) {
-	    models.courss.hasMany(models.presences, {
+	    /*models.courss.belongsToMany(models.presences, {
 	    	//onDelete: "CASCADE",
-	    	foreignKey: 'code_module_groupe',
-	    	sourceKey: 'code_module_groupe',
+	    	through: models.eleves,
+	    	foreignKey: 'id_carte',
+	    	//sourceKey: 'code_module_groupe',
 	    	constraints: false
 	    });
 /*
@@ -62,6 +63,11 @@ module.exports = (sequelize, DataTypes) => {
 	    	foreignKey: 'professeur_cours',
 	    	constraints: false
 	    });
+
+	    models.courss.hasMany(models.presences, {
+	    	foreignKey: 'code_module_groupe',
+	    	constraints: false
+	    })
 	};
 
 	return Cours;

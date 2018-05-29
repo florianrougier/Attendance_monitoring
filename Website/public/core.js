@@ -16,23 +16,6 @@ function mainController($scope, $http) {
 	// create cours
 	// delete cours
 
-
-
-
-/*
-	// get pour récupérer les informations puis les afficher
-	$http.get('/pre')
-		.success(function(data) {
-			$scope.cours = data;
-			console.log('data : ' + data);
-			console.log(data);
-		})
-		.error(function(data) {
-			// afficher l'erreur dans le gui
-			console.log('Erreur : ' + data)
-		});
-*/
-
 	// get pour récupérer la liste des utilisateurs
 	$http.get('/getListeUtilisateurs')
 		.success(function(data) {

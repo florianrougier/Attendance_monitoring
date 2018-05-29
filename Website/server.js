@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var morgan = require('morgan');
-var db = require('./models/index');
+var db = require('./models/index'); // BDD
 var path = require('path');
 var fileUpload = require('express-fileupload');
 var xlsx = require('node-xlsx');
@@ -15,10 +15,24 @@ var schedule = require('node-schedule'); // job scheduler
 var app = express();
 
 // définition du port
-app.set('port', 9000);
+app.set('port', 9000); // pour le serveur : port 8080
 
-// permet d'avoir les log de toutes les requetes au serveur
-app.use(morgan('dev'));
+// morgan permet d'avoir les log de toutes les requetes au serveur
+// skipLog : fonction qui exclue des log les requetes pour les fichiers
+// js, jpg, png et css
+function skipLog (req, res) {
+  var url = req.url;
+  if(url.indexOf('?')>0)
+    url = url.substr(0,url.indexOf('?'));
+  if(url.match(/(js|jpg|png|css)$/ig)) {
+    return true;
+  }
+  if (req.url == '/vendor/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0') {
+    return true;}
+  return false;
+}
+
+app.use(morgan('tiny', {stream: process.stdout, skip: skipLog}));
 
 // initialize body-parser to parse incoming parameters requets to req.body
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -29,8 +43,6 @@ app.use(cookieParser());
 // charge le module permetttant d'uploader des fichiers
 app.use(fileUpload());
 
-// initialize express-session to allow us track the logged-in user across sessions.
-var idleTimeoutSeconds = 600;
 
 // =========================
 // a utiliser plus tard pour programmer la maj des status des étudiants absents et l'envoie de fichiers à l'administration
@@ -42,6 +54,10 @@ var j = schedule.scheduleJob('5 * * * * *', function(){
   console.log('The answer to life, the universe, and everything!');
 });
 *///========================
+
+
+// initialise express-session, permet de tracker l'utilisateur à travers les sessions.
+var idleTimeoutSeconds = 600;
 
 // options du cookie de session
 app.use(session({
@@ -77,52 +93,9 @@ var sessionChecker = (req, res, next) => {
 
 app.use(express.static(path.join(__dirname + '/public')));
 
+
 // route vers la page de login
 app.get('/', sessionChecker, (req, res) => {
-
-    // création admin ===================================
-    db['users'].create({username:'valentin', password:'test', email:'valentin.m@gmail.com', droits:'admin'});
-    db['admins'].create({nom:'m', prenom:'valentin', email:'valentin.m@gmail.com'});
-
-    // création de professeurs ==========================
-    db['users'].create({username:'flo', password:'test', email:'flo.aaa@gmail.com', droits:'professeur'});
-    db['professeurs'].create({nom:'flo', prenom:'m', email:'flo.aaa@gmail.com'});
-
-    db['users'].create({username:'profA', password:'test', email:'prof.A@epfedu.fr', droits:'professeur'});
-    db['professeurs'].create({nom:'prof', prenom:'A', email:'prof.A@epfedu.fr'});
-
-    db['users'].create({username:'profB', password:'test', email:'prof.B@epfedu.fr', droits:'professeur'});
-    db['professeurs'].create({nom:'prof', prenom:'B', email:'prof.B@epfedu.fr'});
-
-    db['users'].create({username:'profC', password:'test', email:'prof.C@epfedu.fr', droits:'professeur'});
-    db['professeurs'].create({nom:'prof', prenom:'C', email:'prof.C@epfedu.fr'});
-
-    // création d'élèves =================================
-    db['users'].create({username:'simon', password:'test', email:'simon.negrier@gmail.com', droits:'eleve'});
-    db['eleves'].create({nom:'negrier', prenom:'simon', email:'simon.negrier@gmail.com', promo:'2019', groupe:'AA', id_carte:'12345'});
-
-    db['users'].create({username:'martin', password:'test', email:'martin.dupont@gmail.com', droits:'eleve'});
-    db['eleves'].create({nom:'dupont', prenom:'martin', email:'martin.dupont@gmail.com', promo:'2019', groupe:'AB'});
-
-    console.log("CREATION DES presences");
-    var date_arrivee = new Date('2018-05-11T09:07:00Z');
-    var date_depart = new Date('2018-05-11T10:32:00Z');
-
-    db['presences'].create({heure_arrivee:date_arrivee, heure_depart:date_depart, statut:'Absent', id_carte:'12345',
-                            code_module_groupe:'MSFGE1ME01AA1'});
-
-    db['presences'].create({heure_arrivee:date_arrivee, heure_depart:date_depart, statut:'Présent', id_carte:'12345',
-                            code_module_groupe:'MSFGE1ME01AA1'});
-
-    db['presences'].create({heure_arrivee:date_arrivee, heure_depart:date_depart, statut:'Présent', id_carte:'12345',
-                            code_module_groupe:'MSFGE1ME01AAAA1'});
-
-    var date_debut = new Date('2018-05-11T09:00:00Z');
-    var date_fin = new Date('2018-05-11T10:30:00Z');
-
-    db['courss'].create({matiere:'Algorithmique', salle:'I1', date:date_debut, heure_debut:date_debut, code_module:'MSFGE1ME01AA',
-                             heure_fin:date_fin, groupe:'AA', professeur_cours:'prof.A@epfedu.fr', code_cours:'1'});
-
     res.redirect('/login');
 });
 
@@ -131,58 +104,41 @@ app.get('/', sessionChecker, (req, res) => {
 app.route('/login')
     .get(sessionChecker, (req, res) => {
         res.sendFile(__dirname + '/views/login.html');
+
 /*
-        var date_debut = new Date('2018-05-11T09:00:00Z');
-        var date_fin = new Date('2018-05-11T10:30:00Z');
-
-        var date_debut2 = new Date('2018-05-11T10:45:00Z');
-        var date_fin2 = new Date('2018-05-11T12:15:00Z');
-
-        // créer un cours
-        db['courss'].create({matiere:'Algorithmique', salle:'I1', date:date_debut, heure_debut:date_debut, code_module:'MSFGE1ME01',
-                             heure_fin:date_fin, groupe:'AA', professeur:'prof.A@epfedu.fr', code_cours:'1'});
-
-        db['courss'].create({matiere:'Projet Web', salle:'1L', date:date_debut, heure_debut:date_debut, heure_fin:date_fin,
-                             code_module:'MSAPP1IN09', groupe:'AB', professeur:'prof.B@epfedu.fr', code_cours:'1'});
-
-        db['courss'].create({matiere:'Algorithmique', salle:'2L', date:date_debut2, heure_debut:date_debut2, heure_fin:date_fin2,
-                             code_module:'MSFGE1ME01', groupe:'AC', professeur:'prof.A@epfedu.fr', code_cours:'2'});
-
-        db['courss'].create({matiere:'Algorithmique', salle:'2L', date:date_debut2, heure_debut:date_debut2, heure_fin:date_fin2,
-                             code_module:'MSFGE1ME01', groupe:'AC', professeur:'prof.C@epfedu.fr', code_cours:'2'});
-        
-
         // créer une présence / absence
         var date_arrivee = new Date('2018-05-11T09:07:00Z');
         var date_depart = new Date('2018-05-11T10:32:00Z');
 
-        db['presences'].create({heure_arrivee:date_arrivee, heure_depart:date_depart, statut:'Absent', email:'simon.negrier@gmail.com',
-                                code_module_groupe:'MSFGE1ME01AA1'});*/
-
-        // tests de récupération de présences
+        // tests de récupération de présences 
         db.users.findOne({where: {username: 'simon'}, include: [{model:db.eleves, include: [{model: db.presences}]}]})
-        .then((user) => console.log('\n\n\n\n\n\n' + 'liste des éléèves avec présences et cours 11111' + JSON.stringify(user)) + '\n\n\n\n\n');
+        .then((user) => console.log('\n\n' + 'liste des éléèves avec présences et cours 1' + JSON.stringify(user)) + '\n\n');
 
         db.eleves.findOne({where: {prenom: 'simon'}, include: [{model: db.presences}]})
-        .then((user) => console.log('\n\n\n\n\n\n' + 'liste des eleves avec présence 222222' + JSON.stringify(user)) + '\n\n\n\n\n');
+        .then((user) => console.log('\n\n' + 'liste des eleves avec présence 2' + JSON.stringify(user)) + '\n\n');
 
         db.eleves.findOne({where: {prenom: 'simon'}})
-        .then((user) => user.getPresences()).then(user => console.log('\n\n\n\n\n\n' + 'liste des eleves 33333\n' + JSON.stringify(user)) + '\n\n\n\n\n');
+        .then((user) => user.getPresences()).then(user => console.log('\n\n' + 'liste des eleves 3\n' + JSON.stringify(user)) + '\n\n');
 
         // test de récupérations des cours et des professeurs
         db.courss.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.professeurs}]})
-        .then((cours) => console.log('\n\n\n\n\n\n' + 'liste des cours 44444\n' + JSON.stringify(cours)) + '\n\n\n\n\n');
+        .then((cours) => console.log('\n\n' + 'liste des cours 4\n' + JSON.stringify(cours)) + '\n\n');
 
         db.professeurs.findOne({where: {email: 'prof.A@epfedu.fr'}, include: [{model: db.courss}]})
-        .then((professeur) => console.log('\n\n\n\n\n\n' + 'liste des professeurs 555555\n' + JSON.stringify(professeur)) + '\n\n\n\n\n');
+        .then((professeur) => console.log('\n\n' + 'liste des professeurs 5\n' + JSON.stringify(professeur)) + '\n\n');
 
         db.presences.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}})
-        .then((presence) => console.log('\n\n\n\n\n\n' + 'liste des presences 666666\n' + JSON.stringify(presence)) + '\n\n\n\n\n\n');
+        .then((presence) => console.log('\n\n' + 'liste des presences 6\n' + JSON.stringify(presence)) + '\n\n');
 
         db.courss.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.presences}]})
-        .then((cours) => console.log('\n\n\n\n\n\n' + 'liste des presences 777777\n' + JSON.stringify(cours)) + '\n\n\n\n\n\n');
+        .then((cours) => console.log('\n\n' + 'liste des presences 7\n' + JSON.stringify(cours)) + '\n\n');
 
+        db.presences.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.presences}]})
+        .then((presence) => console.log('\n\n' + 'liste des presences 6\n' + JSON.stringify(presence)) + '\n\n');
 
+        db.presences.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.eleves}]})
+            .then((presence) => console.log('\n\n' + 'liste des presences :\n' + JSON.stringify(presence)) + '\n\n');
+*/
     })
     .post((req, res) => {
         var username = req.body.username,
@@ -200,15 +156,9 @@ app.route('/login')
         });
     });
 
-/*
-app.get('/pre', (req,res) => {
-    db.courss.findAll({ raw: true }).then( (cours) => res.json(cours));
-});
-*/
 
 // route vers la page d'acceuil
 app.get('/AcceuilSession', (req, res) => {
-
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 	   res.sendFile(__dirname + '/views/administrationn/AcceuilSession.html');
     } else if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'professeur') {
@@ -220,6 +170,7 @@ app.get('/AcceuilSession', (req, res) => {
     }
 });
 
+
 // route vers la page d'administration
 app.get('/administration', (req, res) => {
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
@@ -228,6 +179,7 @@ app.get('/administration', (req, res) => {
        res.redirect('/login');
     }
 });
+
 
 // route vers la page de création d'utilisateur
 app.get('/creerutilisateur', (req, res) => {
@@ -241,10 +193,9 @@ app.get('/creerutilisateur', (req, res) => {
 
 // route pour la création d'un compte utilisateur
 app.post('/creer_un_compte', (req, res) => {
-
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 
-       // check type de droits :
+       // check type de droits du compte à créer :
        var droits = req.body.selection_droits;
 
        if (droits === 'admin') {
@@ -256,14 +207,11 @@ app.post('/creer_un_compte', (req, res) => {
             .then(user => {
                 req.session.user = user.dataValues;
 
-                // send mail
-
             })
             .catch(error => {
                 //marque message d'erreur gui
                 console.log(error);
             });
-
 
        } else if (droits === 'professeur') {
 
@@ -277,25 +225,18 @@ app.post('/creer_un_compte', (req, res) => {
                     prenom: req.body.prenom
                 })
 
-                //req.session.user = user.dataValues;
-
-                // send mail
-
             })
             .catch(error => {
                 //marque message d'erreur gui
                 console.log(error);
             });
 
-       } else if (droits === 'eleve') {
-            //var password_generator = require('generate-password');
-            //password_generated = password_generator.generate({length:8, numbers:true});
+       } else { // si élève
 
             db.users.create({
                 username: req.body.prenom,
                 email: req.body.prenom + '.' + req.body.nom + '@epfedu.fr',
                 droits: droits,
-                //password: password_generated
             })
             .then(user => {
                 user.createEleve({
@@ -305,18 +246,11 @@ app.post('/creer_un_compte', (req, res) => {
                     groupe: req.body.groupe
                 })
 
-                //req.session.user = user.dataValues;
-
-                // send mail
-
             })
             .catch(error => {
                 //marque message d'erreur gui
                 console.log(error);
             });
-
-       } else {
-            console.log('ATTENTTION, IL Y A EU UNE ERREUR DANS LA SELECTION DES DROITS !!!');
        }
 
     } else {
@@ -335,7 +269,8 @@ app.get('/creerListUtilisateur', (req, res) => {
     }
 });
 
-// permet d'uplader un fichier xlsx ou xls pour le mettre dans la BDD
+
+// permet d'uplader un fichier xlsx ou xls pour le mettre dans la BDD -- PAS FINI !
 app.post('/uploadFileUtilisateurs', function(req, res) {
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
         if (!req.files){
@@ -384,7 +319,6 @@ app.post('/uploadFileUtilisateurs', function(req, res) {
     } else {
         res.redirect('/login');
     }
-
 });
 
 
@@ -396,6 +330,7 @@ app.get('/listeUtilisateurs', (req, res) => {
         res.redirect('/login');
     }
 });
+
 
 // renvoie la liste des utilisateurs pour l'affichage
 app.get('/getListeUtilisateurs', (req,res) => {
@@ -410,8 +345,8 @@ app.get('/getListeUtilisateurs', (req,res) => {
     } else {
         res.redirect('/login');
     }
-    
 });
+
 
 // supprime l'utilisateur demandé
 app.delete('/supprimerUnUtilisateur:email', (req, res, ) => {
@@ -424,9 +359,7 @@ app.delete('/supprimerUnUtilisateur:email', (req, res, ) => {
     } else {
         res.redirect('/login');
     }
-
 });
-
 
 
 // route vers la page de présence / d'absence
@@ -445,7 +378,6 @@ app.get('/presence', (req, res) => {
 /*
 // renvoie la liste des présences pour l'affichage
 app.get('/getListePresences', (req,res) => {
-
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 
         db.presences.findAll({ include: [{model:db.eleves},{model:db.courss},{model:db.professeurs}]})
@@ -456,15 +388,12 @@ app.get('/getListePresences', (req,res) => {
     } else {
         res.redirect('/login');
     }
-    
 });
 */
 
-// route pour le logout
+// route pour le logout, supprimer le cookie
 app.get('/logout', (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
-        //res.clearCookie('user_sid');
-        //res.redirect('/');
         req.session.destroy();
         res.redirect('/login');
     } else {
@@ -474,9 +403,9 @@ app.get('/logout', (req, res) => {
 
 // route pour la page 404
 app.use(function (req, res, next) {
-    res.status(404).send("Sorry can't find that!")
+    res.status(404).send("Erreur 404 : la page n'existe pas !")
 });
 
 // lance le serveur express
 // on ecoute le port (port 9000 ici)
-app.listen(app.get('port'), () => console.log(`App started on port ${app.get('port')}`));
+app.listen(app.get('port'), () => console.log(`L'application utilise le port : ${app.get('port')}`));
