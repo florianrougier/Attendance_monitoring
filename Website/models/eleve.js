@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING
 		},
 		id_carte: {
-			type: DataTypes.STRING
+			type: DataTypes.STRING,
+			unqique:true,
+			primaryKey:true
+
 		}
 
 	});
@@ -32,11 +35,10 @@ module.exports = (sequelize, DataTypes) => {
 	    	foreignKey: 'email',
 	    	constraints: false
 	    });
-
+	    
 	    models.eleves.hasMany(models.presences, {
-	    	//onDelete: "CASCADE",
 	    	foreignKey: 'id_carte',
-	    	sourceKey: 'id_carte',
+	    	sourceKey:'id_carte',
 	    	constraints: false
 	    });
 

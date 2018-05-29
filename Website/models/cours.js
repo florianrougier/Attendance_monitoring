@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		code_cours: {
 			type: DataTypes.STRING,
+			primaryKey:true
 		}
 	},{
 		hooks: {
@@ -58,14 +59,16 @@ module.exports = (sequelize, DataTypes) => {
 	    	constraints: false
 	    });*/
 
+	    /*
 	    models.courss.belongsTo(models.professeurs, {
 	    	//onDelete: "CASCADE",
 	    	foreignKey: 'professeur_cours',
 	    	constraints: false
-	    });
-
+	    });*/
+	    
 	    models.courss.hasMany(models.presences, {
-	    	foreignKey: 'code_module_groupe',
+	    	foreignKey: 'code_cours',
+	    	sourceKey:'code_cours',
 	    	constraints: false
 	    })
 	};

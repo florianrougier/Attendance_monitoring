@@ -26,7 +26,7 @@ function mainController($scope, $http) {
 			console.log('Erreur : ' + data)
 		});
 
-/*
+
 	// get pour récupérer la liste des présences/absences
 	$http.get('/getListePresences')
 		.success(function(data) {
@@ -37,7 +37,7 @@ function mainController($scope, $http) {
 			// afficher l'erreur dans le gui
 			console.log('Erreur : ' + data)
 		});
-*/
+
 
 	// crééer un élément dans une table
 	/*

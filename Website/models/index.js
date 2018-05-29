@@ -1,6 +1,7 @@
 var Sequelize = require('sequelize');
 var bcrypt = require('bcrypt');
 
+
 // crée une instance sequelize avec les informations de la base de donnée locale
 var sequelize = new Sequelize('postgres://postgres:saucisson@localhost:5432/projetmintest', {
 	dialect: 'postgres',
@@ -9,15 +10,13 @@ var sequelize = new Sequelize('postgres://postgres:saucisson@localhost:5432/proj
         timestamps: false
      },
 
-  // you can either write to console
-  //logging: console.log
-
-  // or write your own custom logging function
+  // fonction pour rendre le logging des requetes sql plus lisibles
   logging: function (str) {
     console.log ('\n' + str + '\n');
-    // do stuff with the sql str
   }
+
 });
+
 
 db = {};
 

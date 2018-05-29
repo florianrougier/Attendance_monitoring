@@ -62,36 +62,27 @@ module.exports = (sequelize, DataTypes) => {
 			            pass: 'StupidEKeV91.@'
 			        }
 			    });
-				*/
 
 				//console.log("INFOS : ");
 				//console.log(user.getEleve());
-
-				/*
+				
 				console.log("PASSWORD GENERATED : ");
 				console.log(password_generated);
 
-				console.log("VARIABLES DE USER : ");
-				console.log(user);
-				*/
+				var text = ' \n le mot de passe pour accéder à votre compte EPF Présence est : ' +  password_generated;
 
-				/*var text = ' \n le mot de passe pour accéder à votre compte EPF Présence est : ' +  password_generated;
-
-				// créer un compte de test avant
 			    var mailOptions = {
 			        from: 'simon.negrier@epfedu.fr',
-			        to: user.email, // !!!!!!!!!!!!!!!! variable user.email
-			        subject: 'Sending Email using Node.js',
+			        to: user.email,
+			        subject: 'Création de compte EPF Présence',
 			        text: text
 			    };
-
-			    console.log('debut test \n');
 
 			    transporter.sendMail(mailOptions, function(error, info){
 			        if (error) {
 			            console.log(error);
 			        } else {
-			            console.log('Email sent: ' + info.response);
+			            console.log('Email envoyé : ' + info.response);
 			        }
 			    });*/
 			}
@@ -123,7 +114,7 @@ module.exports = (sequelize, DataTypes) => {
 	User.prototype.validPassword = function (password) {
 		return bcrypt.compareSync(password, this.password);
 	}
-
+/*
 	// A ECRIRE
 	// le prof doit pouvoir exclure un utilisateur
 	User.prototype.exclureEleve = function () {
@@ -138,7 +129,7 @@ module.exports = (sequelize, DataTypes) => {
 		if (this.droits === 'admin') {
 
 		}
-	}
+	}*/
 
 	return User;
 };

@@ -14,29 +14,37 @@ module.exports = (sequelize, DataTypes) => {
 		id_carte: {
 			type: DataTypes.STRING
 		},
-		code_module_groupe: {
-			type: DataTypes.STRING
+		code_cours: {
+			type: DataTypes.STRING,
+			primaryKey:true
 		}
 
 	});
 
 	Presence.associate = function (models) {
+	    
 	    models.presences.belongsTo(models.eleves, {
 	    	foreignKey: 'id_carte',
+	    	targetKey:'id_carte',
 	    	constraints: false
 	    });
 
+	    
 	    models.presences.belongsTo(models.professeurs, {
 	    	foreignKey: 'id_carte',
+	    	targetKey:'id_carte',
 	    	constraints: false
 	    });
 
+	    
 	    models.presences.belongsTo(models.courss, {
-	    	foreignKey: 'code_module_groupe',
+	    	foreignKey: 'code_cours',
+	    	targetKey: 'code_cours',
 	    	constraints: false
 	    });
 	};
 
+/*
 	Presence.prototype.defineStatut = function () {
 		// cas rien (absent)
 		if(this.heure_arrivee === null) {
@@ -49,6 +57,7 @@ module.exports = (sequelize, DataTypes) => {
 			console.log('il y a eu un problème');
 		}
 	}
+	*/
 
 	return Presence;
 };

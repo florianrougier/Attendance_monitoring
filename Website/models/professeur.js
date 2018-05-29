@@ -29,25 +29,22 @@ module.exports = (sequelize, DataTypes) => {
 	    	constraints: false
 	    });
 
+	    
 	    models.professeurs.hasMany(models.presences, {
 	    	//onDelete: "CASCADE",
 	    	foreignKey: 'id_carte',
-	    	sourceKey: 'id_carte',
+	    	sourceKey:'id_carte',
 	    	constraints: false
 	    });
 
+	    /*
 	    models.professeurs.hasMany(models.courss, {
 	    	//onDelete: "CASCADE",
 	    	foreignKey: 'professeur_cours',
 	    	sourceKey: 'email',
 	    	constraints: false
-	    });
+	    });*/
 	};
-
-
-	Professeur.prototype.sayHi = function () {
-		console.log('HI !!!!!!!!!!!!');
-	}
 
 	return Professeur;
 };

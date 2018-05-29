@@ -18,8 +18,7 @@ var app = express();
 app.set('port', 9000); // pour le serveur : port 8080
 
 // morgan permet d'avoir les log de toutes les requetes au serveur
-// skipLog : fonction qui exclue des log les requetes pour les fichiers
-// js, jpg, png et css
+// skipLog : fonction qui exclue des log
 function skipLog (req, res) {
   var url = req.url;
   if(url.indexOf('?')>0)
@@ -105,40 +104,16 @@ app.route('/login')
     .get(sessionChecker, (req, res) => {
         res.sendFile(__dirname + '/views/login.html');
 
-/*
-        // créer une présence / absence
+        /*// créer une présence / absence
         var date_arrivee = new Date('2018-05-11T09:07:00Z');
-        var date_depart = new Date('2018-05-11T10:32:00Z');
+        var date_depart = new Date('2018-05-11T10:32:00Z');*/
 
-        // tests de récupération de présences 
-        db.users.findOne({where: {username: 'simon'}, include: [{model:db.eleves, include: [{model: db.presences}]}]})
-        .then((user) => console.log('\n\n' + 'liste des éléèves avec présences et cours 1' + JSON.stringify(user)) + '\n\n');
+        /*db.presences.findAll({include: [{model: db.eleves}]})
+            .then((presence) => console.log('\n\n' + 'liste des presences :\n' + JSON.stringify(presence)) + '\n\n');*/
+        //db.users.findAll({include: [{model: db.eleves},{model: db.professeurs}, {model: db.admins}]}).then((user) => console.log(JSON.stringify(user)));
+        
+        db.presences.findAll({include: [{model: db.courss}]}).then((presence) => console.log(JSON.stringify(presence)));
 
-        db.eleves.findOne({where: {prenom: 'simon'}, include: [{model: db.presences}]})
-        .then((user) => console.log('\n\n' + 'liste des eleves avec présence 2' + JSON.stringify(user)) + '\n\n');
-
-        db.eleves.findOne({where: {prenom: 'simon'}})
-        .then((user) => user.getPresences()).then(user => console.log('\n\n' + 'liste des eleves 3\n' + JSON.stringify(user)) + '\n\n');
-
-        // test de récupérations des cours et des professeurs
-        db.courss.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.professeurs}]})
-        .then((cours) => console.log('\n\n' + 'liste des cours 4\n' + JSON.stringify(cours)) + '\n\n');
-
-        db.professeurs.findOne({where: {email: 'prof.A@epfedu.fr'}, include: [{model: db.courss}]})
-        .then((professeur) => console.log('\n\n' + 'liste des professeurs 5\n' + JSON.stringify(professeur)) + '\n\n');
-
-        db.presences.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}})
-        .then((presence) => console.log('\n\n' + 'liste des presences 6\n' + JSON.stringify(presence)) + '\n\n');
-
-        db.courss.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.presences}]})
-        .then((cours) => console.log('\n\n' + 'liste des presences 7\n' + JSON.stringify(cours)) + '\n\n');
-
-        db.presences.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.presences}]})
-        .then((presence) => console.log('\n\n' + 'liste des presences 6\n' + JSON.stringify(presence)) + '\n\n');
-
-        db.presences.findOne({where: {code_module_groupe: 'MSFGE1ME01AAAA1'}, include: [{model: db.eleves}]})
-            .then((presence) => console.log('\n\n' + 'liste des presences :\n' + JSON.stringify(presence)) + '\n\n');
-*/
     })
     .post((req, res) => {
         var username = req.body.username,
@@ -334,7 +309,6 @@ app.get('/listeUtilisateurs', (req, res) => {
 
 // renvoie la liste des utilisateurs pour l'affichage
 app.get('/getListeUtilisateurs', (req,res) => {
-
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 
         db.users.findAll({ include: [{model:db.eleves},{model:db.admins},{model:db.professeurs}]})
@@ -375,12 +349,12 @@ app.get('/presence', (req, res) => {
     }
 });
 
-/*
+
 // renvoie la liste des présences pour l'affichage
 app.get('/getListePresences', (req,res) => {
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 
-        db.presences.findAll({ include: [{model:db.eleves},{model:db.courss},{model:db.professeurs}]})
+        db.presences.findAll({ include: [{model: db.eleves},{model:db.professeurs},{model: db.courss}]})
             .then( (presences) => {
                 res.send(JSON.stringify(presences));
         });
@@ -389,7 +363,7 @@ app.get('/getListePresences', (req,res) => {
         res.redirect('/login');
     }
 });
-*/
+
 
 // route pour le logout, supprimer le cookie
 app.get('/logout', (req, res) => {

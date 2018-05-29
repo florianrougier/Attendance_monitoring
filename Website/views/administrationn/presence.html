@@ -18,6 +18,9 @@
 
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
 
+	<script type="text/javascript" src="/vendor/angular/angular.js"></script>
+	<script type="text/javascript" src="/core.js"></script>
+
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark">
@@ -120,29 +123,11 @@
 	</nav>
 
 
-	<div class="content-wrapper">
+	<div class="content-wrapper" ng-controller="mainController">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
 					<h1>Absences</h1>
-
-					<div>
-		            <a class="btn btn-primary btn-block" href="/creerutilisateur" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); ;color: black; margin-bottom: 5px; margin-top: 50px;">Recherche par année</a>
-		            </div>
-
-		            <div>
-		            <a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">Recherche par matière</a>
-		            </div>
-
-		            <div>
-		            <a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">Recherche par date</a>
-		            </div>
-
-		            <div>
-		            <a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">Rechercher une personne</a>
-		            </div>
-
-
 
 		            <table class="table">
 						<thead>
@@ -157,7 +142,7 @@
 								<td>Code</td>
 								<td>Prénom Prof</td>
 								<td>Nom Prof</td>
-								<td>Motif</td>
+								<td>Status</td>
 							</tr>
 						</thead>
 
@@ -165,14 +150,15 @@
 							<tr ng-repeat="presence in presences">
 								<td>{{presence.eleve.nom}}</td>
 								<td>{{presence.eleve.prenom}}</td>
-								<td>{{presence.cours.module}}</td>
-								<td>{{presence.cours.date}}</td>
-								<td>{{presence.cours.date}}</td>
-								<td>{{presence.cours.heure_debut}}</td>
-								<td>{{presence.cours.heure_fin}}</td>
-								<td>{{presence.cours.code_module_groupe}}</td>
+								<td>{{presence.cour.module}}</td>
+								<td>{{presence.cour.date}}</td>
+								<td>{{presence.cour.date}}</td>
+								<td>{{presence.cour.heure_debut}}</td>
+								<td>{{presence.cour.heure_fin}}</td>
+								<td>{{presence.cour.code_cours}}</td>
+								<td>{{presence.professeur.nom}}</td>
 								<td>{{presence.professeur.prenom}}</td>
-								<td>{{presence.professeur.statut}}</td>
+								<td>{{presence.statut}}</td>
 								<td style="color: red; cursor: pointer;" ng-click="">Supprimer</td>
 							</tr>
 						</tbody>
