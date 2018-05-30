@@ -19,6 +19,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
 
 	<script type="text/javascript" src="/vendor/angular/angular.js"></script>
+	<script src="/angular-locale_fr-fr.js"></script>
 	<script type="text/javascript" src="/core.js"></script>
 
 </head>
@@ -102,9 +103,9 @@
 			<li class="nav-item">
 				<form class="form-inline my-2 my-lg-0 mr-lg-2">
 					<div class="input-group">
-						<input class="form-control" type="text" placeholder="Search for...">
+						<input class="form-control" type="text" placeholder="Search for..." ng-model="searchText">
 						<span class="input-group-append">
-							<button class="btn btn-primary" type="button" style="background-color: rgb(180,180,180) !important; border-color: rgb(180,180,180);">
+							<button class="btn btn-primary" type="submit" style="background-color: rgb(180,180,180) !important; border-color: rgb(180,180,180);">
 								<i class="fa fa-search"></i>
 							</button>
 						</span>
@@ -131,42 +132,35 @@
 
 		            <table class="table">
 						<thead>
-							<tr>
-								<td>Nom Absent</td>
-								<td>Prénom Absent</td>
+							<tr style="font-size: 12px;">
+								<td>Absent</td>
 								<td>Module</td>
 								<td>Jour</td>
 								<td>Date</td>
 								<td>Début</td>
 								<td>Fin</td>
 								<td>Code</td>
-								<td>Prénom Prof</td>
-								<td>Nom Prof</td>
+								<td>Professeur</td>
 								<td>Status</td>
 							</tr>
 						</thead>
 
-						<tbody>
-							<tr ng-repeat="presence in presences">
-								<td>{{presence.carte.eleve.nom}}{{presence.carte.professeur.nom}}</td>
-								<td>{{presence.carte.eleve.prenom}}{{presence.carte.professeur.nom}}</td>
+						<tbody style="font-size: 12px;">
+							<tr ng-repeat="presence in presences | filter :searchText">
+								<td>{{presence.carte.eleve.nom && presence.carte.eleve.nom + ' ' + presence.carte.eleve.prenom || presence.carte.professeur.nom + ' ' + presence.carte.professeur.prenom}}</td>
 								<td>{{presence.cour.code_module}}</td>
+								<td>{{presence.cour.date | date:'EEEE':'fr'}}</td>
 								<td>{{presence.cour.date}}</td>
-								<td>{{presence.cour.date}}</td>
-								<td>{{presence.cour.heure_debut}}</td>
-								<td>{{presence.cour.heure_fin}}</td>
+								<td>{{presence.cour.heure_debut | limitTo: 5}}</td>
+								<td>{{presence.cour.heure_fin | limitTo: 5}}</td>
 								<td>{{presence.cour.code_cours}}</td>
-								<td>{{presence.cour.professeur.nom}}</td>
-								<td>{{presence.cour.professeur.prenom}}</td>
+								<td>{{presence.cour.professeur.prenom}} {{presence.cour.professeur.nom}}</td>
 								<td>{{presence.statut}}</td>
 								<td style="color: red; cursor: pointer;" ng-click="">Supprimer</td>
 							</tr>
 						</tbody>
 
 					</table>
-
-
-
 
 
 				</div>

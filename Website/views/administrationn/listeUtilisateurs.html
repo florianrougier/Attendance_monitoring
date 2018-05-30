@@ -103,9 +103,9 @@
 			<li class="nav-item">
 				<form class="form-inline my-2 my-lg-0 mr-lg-2">
 					<div class="input-group">
-						<input class="form-control" type="text" placeholder="Search for...">
+						<input class="form-control" type="text" placeholder="Search for..." ng-model="searchText">
 						<span class="input-group-append">
-							<button class="btn btn-primary" type="button" style="background-color: rgb(180,180,180) !important; border-color: rgb(180,180,180);">
+							<button class="btn btn-primary" type="submit" style="background-color: rgb(180,180,180) !important; border-color: rgb(180,180,180);">
 								<i class="fa fa-search"></i>
 							</button>
 						</span>
@@ -141,7 +141,7 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="user in users">
+							<tr ng-repeat="user in users | filter : searchText">
 								<td>{{user.eleve.nom}}{{user.professeur.nom}}{{user.admin.nom}}</td>
 								<td>{{user.eleve.prenom}}{{user.professeur.prenom}}{{user.admin.prenom}}</td>
 								<td>{{user.email}}</td>

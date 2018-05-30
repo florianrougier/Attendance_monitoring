@@ -91,6 +91,7 @@ var sessionChecker = (req, res, next) => {
 }
 
 app.use(express.static(path.join(__dirname + '/public')));
+app.use(express.static(path.join(__dirname + '/node_modules/angular-i18n')));
 
 
 // route vers la page de login
