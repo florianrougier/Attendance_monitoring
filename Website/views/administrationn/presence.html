@@ -148,16 +148,16 @@
 
 						<tbody>
 							<tr ng-repeat="presence in presences">
-								<td>{{presence.eleve.nom}}</td>
-								<td>{{presence.eleve.prenom}}</td>
-								<td>{{presence.cour.module}}</td>
+								<td>{{presence.carte.eleve.nom}}{{presence.carte.professeur.nom}}</td>
+								<td>{{presence.carte.eleve.prenom}}{{presence.carte.professeur.nom}}</td>
+								<td>{{presence.cour.code_module}}</td>
 								<td>{{presence.cour.date}}</td>
 								<td>{{presence.cour.date}}</td>
 								<td>{{presence.cour.heure_debut}}</td>
 								<td>{{presence.cour.heure_fin}}</td>
 								<td>{{presence.cour.code_cours}}</td>
-								<td>{{presence.professeur.nom}}</td>
-								<td>{{presence.professeur.prenom}}</td>
+								<td>{{presence.cour.professeur.nom}}</td>
+								<td>{{presence.cour.professeur.prenom}}</td>
 								<td>{{presence.statut}}</td>
 								<td style="color: red; cursor: pointer;" ng-click="">Supprimer</td>
 							</tr>

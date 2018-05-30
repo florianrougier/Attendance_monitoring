@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING
 		},
 		id_carte: {
-			type: DataTypes.STRING
+			type: DataTypes.STRING,
+			primaryKey: true
 		},
 		code_cours: {
 			type: DataTypes.STRING,
@@ -40,6 +41,15 @@ module.exports = (sequelize, DataTypes) => {
 	    models.presences.belongsTo(models.courss, {
 	    	foreignKey: 'code_cours',
 	    	targetKey: 'code_cours',
+	    	constraints: false
+	    });
+
+
+	    models.presences.hasOne(models.cartes, {
+	    	foreignKey: 'id_carte',
+	    	sourceKey:'id_carte',
+	    	targetKey: 'id_carte',
+	    	primaryKey: 'id_carte',
 	    	constraints: false
 	    });
 	};

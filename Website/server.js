@@ -112,7 +112,13 @@ app.route('/login')
             .then((presence) => console.log('\n\n' + 'liste des presences :\n' + JSON.stringify(presence)) + '\n\n');*/
         //db.users.findAll({include: [{model: db.eleves},{model: db.professeurs}, {model: db.admins}]}).then((user) => console.log(JSON.stringify(user)));
         
-        db.presences.findAll({include: [{model: db.courss}]}).then((presence) => console.log(JSON.stringify(presence)));
+        /*
+        db.presences.findAll({ 
+            include: [{model: db.cartes, include: [{model: db.professeurs}, {model: db.eleves}]}, {model: db.courss}]
+        })
+        .then( (presences) => {
+           console.log(JSON.stringify(presences));
+        });*/
 
     })
     .post((req, res) => {
@@ -354,9 +360,12 @@ app.get('/presence', (req, res) => {
 app.get('/getListePresences', (req,res) => {
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 
-        db.presences.findAll({ include: [{model: db.eleves},{model:db.professeurs},{model: db.courss}]})
-            .then( (presences) => {
-                res.send(JSON.stringify(presences));
+
+        db.presences.findAll({ 
+            include: [{model: db.cartes, include: [{model: db.professeurs}, {model: db.eleves}]}, {model: db.courss, include: [{model: db.professeurs}]}]
+        })
+        .then( (presences) => {
+           res.send(JSON.stringify(presences));
         });
 
     } else {

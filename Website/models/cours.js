@@ -26,12 +26,12 @@ module.exports = (sequelize, DataTypes) => {
 		code_module_groupe: {
 			type: DataTypes.STRING
 		},
-		professeur_cours: {
-			type: DataTypes.STRING
+		email: {
+			type: DataTypes.STRING,
+			primaryKey: true
 		},
 		code_cours: {
 			type: DataTypes.STRING,
-			primaryKey:true
 		}
 	},{
 		hooks: {
@@ -69,6 +69,11 @@ module.exports = (sequelize, DataTypes) => {
 	    models.courss.hasMany(models.presences, {
 	    	foreignKey: 'code_cours',
 	    	sourceKey:'code_cours',
+	    	constraints: false
+	    })
+
+	    models.courss.belongsTo(models.professeurs, {
+	    	foreignKey: 'email',
 	    	constraints: false
 	    })
 	};

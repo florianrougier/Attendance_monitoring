@@ -27,6 +27,7 @@ db['professeurs'] = sequelize.import(__dirname + '/professeur');
 db['presences'] = sequelize.import(__dirname + '/presence');
 db['courss'] = sequelize.import(__dirname + '/cours');
 db['admins'] = sequelize.import(__dirname + '/admin');
+db['cartes'] = sequelize.import(__dirname + '/carte');
 
 
 // crée les associations entre les tables

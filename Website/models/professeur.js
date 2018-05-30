@@ -37,13 +37,19 @@ module.exports = (sequelize, DataTypes) => {
 	    	constraints: false
 	    });
 
-	    /*
-	    models.professeurs.hasMany(models.courss, {
-	    	//onDelete: "CASCADE",
-	    	foreignKey: 'professeur_cours',
+	    models.professeurs.hasOne(models.cartes, {
+	    	foreignKey: 'email',
 	    	sourceKey: 'email',
 	    	constraints: false
-	    });*/
+	    })
+
+	    
+	    models.professeurs.hasMany(models.courss, {
+	    	//onDelete: "CASCADE",
+	    	foreignKey: 'email',
+	    	sourceKey: 'email',
+	    	constraints: false
+	    });
 	};
 
 	return Professeur;
