@@ -37,7 +37,12 @@ module.exports = (sequelize, DataTypes) => {
 	    	constraints: false
 	    });
 
-
+	    models.cartes.hasMany(models.presences, {
+	    	as : 'presences_eleve',
+	    	foreignKey: 'id_carte',
+	    	sourceKey:'id_carte',
+	    	constraints: false
+	    });
 
 	};
 

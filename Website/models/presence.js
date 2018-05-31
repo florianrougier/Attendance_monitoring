@@ -44,6 +44,12 @@ module.exports = (sequelize, DataTypes) => {
 	    	constraints: false
 	    });
 
+	    models.presences.belongsTo(models.cartes, {
+	    	foreignKey: 'id_carte',
+	    	targetKey: 'id_carte',
+	    	constraints: false
+	    });
+
 
 	    models.presences.hasOne(models.cartes, {
 	    	foreignKey: 'id_carte',

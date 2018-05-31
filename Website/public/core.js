@@ -16,11 +16,20 @@ function mainController($scope, $http) {
 	// create cours
 	// delete cours
 
+	// get pour récupérer la liste des presences d'un utilisateur
+	$http.get('/getUserPresences')
+		.success(function(data) {
+			$scope.users_presences = data;
+		})
+		.error(function(data) {
+			console.log('Erreur : ' + data)
+		});
+
+
 	// get pour récupérer la liste des utilisateurs
 	$http.get('/getListeUtilisateurs')
 		.success(function(data) {
 			$scope.users = data;
-			console.log(data);
 		})
 		.error(function(data) {
 			console.log('Erreur : ' + data)
@@ -31,7 +40,6 @@ function mainController($scope, $http) {
 	$http.get('/getListePresences')
 		.success(function(data) {
 			$scope.presences = data;
-			console.log(data);
 		})
 		.error(function(data) {
 			// afficher l'erreur dans le gui

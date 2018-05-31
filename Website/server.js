@@ -27,7 +27,11 @@ function skipLog (req, res) {
     return true;
   }
   if (req.url == '/vendor/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0') {
-    return true;}
+    return true;
+  }
+  if (req.url == '/vendor/bootstrap/css/bootstrap.min.css.map') {
+    return true;
+  }
   return false;
 }
 
@@ -42,6 +46,9 @@ app.use(cookieParser());
 // charge le module permetttant d'uploader des fichiers
 app.use(fileUpload());
 
+// charge les fichier javascript, css et les images. 
+app.use(express.static(path.join(__dirname + '/public')));
+app.use(express.static(path.join(__dirname + '/node_modules/angular-i18n')));
 
 // =========================
 // a utiliser plus tard pour programmer la maj des status des étudiants absents et l'envoie de fichiers à l'administration
@@ -90,9 +97,6 @@ var sessionChecker = (req, res, next) => {
     }
 }
 
-app.use(express.static(path.join(__dirname + '/public')));
-app.use(express.static(path.join(__dirname + '/node_modules/angular-i18n')));
-
 
 // route vers la page de login
 app.get('/', sessionChecker, (req, res) => {
@@ -104,23 +108,6 @@ app.get('/', sessionChecker, (req, res) => {
 app.route('/login')
     .get(sessionChecker, (req, res) => {
         res.sendFile(__dirname + '/views/login.html');
-
-        /*// créer une présence / absence
-        var date_arrivee = new Date('2018-05-11T09:07:00Z');
-        var date_depart = new Date('2018-05-11T10:32:00Z');*/
-
-        /*db.presences.findAll({include: [{model: db.eleves}]})
-            .then((presence) => console.log('\n\n' + 'liste des presences :\n' + JSON.stringify(presence)) + '\n\n');*/
-        //db.users.findAll({include: [{model: db.eleves},{model: db.professeurs}, {model: db.admins}]}).then((user) => console.log(JSON.stringify(user)));
-        
-        /*
-        db.presences.findAll({ 
-            include: [{model: db.cartes, include: [{model: db.professeurs}, {model: db.eleves}]}, {model: db.courss}]
-        })
-        .then( (presences) => {
-           console.log(JSON.stringify(presences));
-        });*/
-
     })
     .post((req, res) => {
         var username = req.body.username,
@@ -128,9 +115,9 @@ app.route('/login')
 
         db['users'].findOne({ where: { username: username } }).then(function (user) {
             if (!user) {
-                res.redirect('/login');
+                res.sendFile(__dirname + '/views/login_false.html');
             } else if (!user.validPassword(password)) {
-                res.redirect('/login');
+                res.sendFile(__dirname + '/views/login_false.html');
             } else {
                 req.session.user = user.dataValues;
                 res.redirect('/AcceuilSession');
@@ -191,7 +178,7 @@ app.post('/creer_un_compte', (req, res) => {
 
             })
             .catch(error => {
-                //marque message d'erreur gui
+                //TODO marque message d'erreur gui
                 console.log(error);
             });
 
@@ -209,7 +196,7 @@ app.post('/creer_un_compte', (req, res) => {
 
             })
             .catch(error => {
-                //marque message d'erreur gui
+                //TODO marque message d'erreur gui
                 console.log(error);
             });
 
@@ -230,7 +217,7 @@ app.post('/creer_un_compte', (req, res) => {
 
             })
             .catch(error => {
-                //marque message d'erreur gui
+                //TODO marque message d'erreur gui
                 console.log(error);
             });
        }
@@ -367,6 +354,22 @@ app.get('/getListePresences', (req,res) => {
         })
         .then( (presences) => {
            res.send(JSON.stringify(presences));
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
+// récupère les présence de l'utilisateur (élève ou professeur)
+app.get('/getUserPresences', (req, res, ) => {
+
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'eleve') {
+       
+        db.eleves.findOne({where: {prenom: req.session.user.username}, include: [{model: db.cartes, include: [{model: db.presences, as:'presences_eleve', include: [{model: db.courss, include: [{model: db.professeurs}]}]}]}]})
+        .then( (eleve) => {
+           res.send(JSON.stringify(eleve));
         });
 
     } else {

@@ -18,6 +18,10 @@
 
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
 
+	<script type="text/javascript" src="/vendor/angular/angular.js"></script>
+	<script src="/angular-locale_fr-fr.js"></script>
+	<script type="text/javascript" src="/core.js"></script>
+
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark">
@@ -79,9 +83,9 @@
 			<li class="nav-item">
 				<form class="form-inline my-2 my-lg-0 mr-lg-2">
 					<div class="input-group">
-						<input class="form-control" type="text" placeholder="Search for...">
+						<input class="form-control" type="text" placeholder="Search for..." ng-model="searchText">
 						<span class="input-group-append">
-							<button class="btn btn-primary" type="button" style="background-color: rgb(180,180,180) !important; border-color: rgb(180,180,180);">
+							<button class="btn btn-primary" type="submit" style="background-color: rgb(180,180,180) !important; border-color: rgb(180,180,180);">
 								<i class="fa fa-search"></i>
 							</button>
 						</span>
@@ -100,27 +104,43 @@
 	</nav>
 
 
-	<div class="content-wrapper">
+	<div class="content-wrapper" ng-controller="mainController">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
 					<h1>Absences</h1>
 
-					<div>
-		            <a class="btn btn-primary btn-block" href="/creerutilisateur" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); ;color: black; margin-bottom: 5px; margin-top: 50px;">Recherche par année</a>
-		            </div>
+						<table class="table">
+							<thead>
+								<tr style="font-size: 12px;">
+									<td>Absent</td>
+									<td>Matiere</td>
+									<td>Jour</td>
+									<td>Date</td>
+									<td>Début</td>
+									<td>Fin</td>
+									<td>Code</td>
+									<td>Professeur</td>
+									<td>Status</td>
+								</tr>
+							</thead>
 
-		            <div>
-		            <a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">Recherche par matière</a>
-		            </div>
+							<tbody style="font-size: 12px;">
+								<tr ng-repeat="presence in users_presences.carte.presences_eleve | filter :searchText">
+									<td>{{users_presences.nom + " " + users_presences.prenom}}</td>
+									<td>{{presence.cour.matiere}}</td>
+									<td>{{presence.cour.date | date:'EEEE':'fr'}}</td>
+									<td>{{presence.cour.date}}</td>
+									<td>{{presence.cour.heure_debut | limitTo: 5}}</td>
+									<td>{{presence.cour.heure_fin | limitTo: 5}}</td>
+									<td>{{presence.cour.code_cours}}</td>
+									<td>{{presence.cour.professeur.prenom + " " + presence.cour.professeur.nom}}</td>
+									<td>{{presence.statut}}</td>-
+								</tr>
+							</tbody>
 
-		            <div>
-		            <a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">Recherche par date</a>
-		            </div>
+						</table>
 
-		            <div>
-		            <a class="btn btn-primary btn-block" value="/administration" style="background-color: rgb(228,231,235); border-color: rgb(228,231,235); margin-bottom: 5px;">Rechercher une personne</a>
-		            </div>
 
 				</div>
 			</div>
