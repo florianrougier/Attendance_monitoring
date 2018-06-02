@@ -15,7 +15,7 @@ var schedule = require('node-schedule'); // job scheduler
 var app = express();
 
 // définition du port
-app.set('port', 9000); // pour le serveur : port 8080
+var port = process.env.PORT || 8080;
 
 // morgan permet d'avoir les log de toutes les requetes au serveur
 // skipLog : fonction qui exclue des log
@@ -441,4 +441,4 @@ app.use(function (req, res, next) {
 
 // lance le serveur express
 // on ecoute le port (port 9000 ici)
-app.listen(app.get('port'), () => console.log(`L'application utilise le port : ${app.get('port')}`));
+app.listen(port, () => console.log('Lapplication utilise le port : ' + port));
