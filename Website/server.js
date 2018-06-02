@@ -305,9 +305,13 @@ app.get('/listeUtilisateurs', (req, res) => {
 app.get('/getListeUtilisateurs', (req,res) => {
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
 
-        db.users.findAll({ include: [{model:db.eleves},{model:db.admins},{model:db.professeurs}]})
-            .then( (user) => {
-                res.send(JSON.stringify(user));
+        db.users.findAll({ 
+            include: [{model:db.eleves},
+                      {model:db.admins},
+                      {model:db.professeurs}]
+        })
+        .then( (user) => {
+            res.send(JSON.stringify(user));
         });
 
     } else {
@@ -320,8 +324,13 @@ app.get('/getListeUtilisateurs', (req,res) => {
 app.delete('/supprimerUnUtilisateur:email', (req, res, ) => {
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
        
-        db.users.destroy({where: {email: req.params.email}}).then(() => {
-            db.users.findAll({ include: [{model:db.eleves},{model:db.admins},{model:db.professeurs}]}).then((users) => {res.json(users)});
+        db.users.destroy({where: {email: req.params.email}})
+        .then(() => {
+            db.users.findAll({ 
+                include: [{model:db.eleves},
+                          {model:db.admins},
+                          {model:db.professeurs}]
+            }).then((users) => {res.json(users)});
         });
 
     } else {
@@ -350,7 +359,36 @@ app.get('/getListePresences', (req,res) => {
 
 
         db.presences.findAll({ 
-            include: [{model: db.cartes, include: [{model: db.professeurs}, {model: db.eleves}]}, {model: db.courss, include: [{model: db.professeurs}]}]
+            include: [{model: db.cartes,
+                       include: [{model: db.professeurs},
+                                 {model: db.eleves}
+                                ]},
+                        {model: db.courss,
+                            include: [{model: db.professeurs}]
+                        }]
+        })
+        .then( (presences) => {
+           res.send(JSON.stringify(presences));
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+});
+
+// renvoie la liste des présences pour l'affichage
+app.get('/getListePresences2', (req,res) => {
+    if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'admin') {
+
+
+        db.presences.findAll({ 
+            include: [{model: db.cartes,
+                       include: [{model: db.professeurs},
+                                 {model: db.eleves}
+                                ]},
+                        {model: db.courss,
+                            include: [{model: db.professeurs}]
+                        }]
         })
         .then( (presences) => {
            res.send(JSON.stringify(presences));
@@ -364,10 +402,18 @@ app.get('/getListePresences', (req,res) => {
 
 // récupère les présence de l'utilisateur (élève ou professeur)
 app.get('/getUserPresences', (req, res, ) => {
-
     if (req.session.user && req.cookies.user_sid && req.session.user.droits === 'eleve') {
        
-        db.eleves.findOne({where: {prenom: req.session.user.username}, include: [{model: db.cartes, include: [{model: db.presences, as:'presences_eleve', include: [{model: db.courss, include: [{model: db.professeurs}]}]}]}]})
+        db.eleves.findOne(
+                    {where: {prenom: req.session.user.username},
+                    include: [{model: db.cartes, 
+                        include: [{model: db.presences, as:'presences_eleve',
+                            include: [{model: db.courss, 
+                                include: [{model: db.professeurs}]
+                            }]
+                        }]
+                    }]
+        })
         .then( (eleve) => {
            res.send(JSON.stringify(eleve));
         });

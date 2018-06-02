@@ -58,8 +58,8 @@ module.exports = (sequelize, DataTypes) => {
 				/*var transporter = nodemailer.createTransport({
 			        service: 'Outlook365',
 			        auth: {
-			            user: 'simon.negrier@epfedu.fr',
-			            pass: 'StupidEKeV91.@'
+			            user: 'email_qui_evoie',
+			            pass: 'code_mail'
 			        }
 			    });
 
@@ -114,22 +114,7 @@ module.exports = (sequelize, DataTypes) => {
 	User.prototype.validPassword = function (password) {
 		return bcrypt.compareSync(password, this.password);
 	}
-/*
-	// A ECRIRE
-	// le prof doit pouvoir exclure un utilisateur
-	User.prototype.exclureEleve = function () {
-		if (this.droits === 'professeur') {
 
-		}
-	}
-
-	// A ECRIRE
-	// l'administration doit pouvoir modifier le statut de présence d'un élève
-	User.prototype.modifierStatusUser = function () {
-		if (this.droits === 'admin') {
-
-		}
-	}*/
 
 	return User;
 };

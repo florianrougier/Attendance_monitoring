@@ -124,7 +124,7 @@
 	</nav>
 
 
-	<div class="content-wrapper" ng-controller="mainController">
+	<div class="content-wrapper" ng-controller="mainController as vm">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
@@ -154,7 +154,7 @@
 						</thead>
 
 						<tbody style="font-size: 12px;">
-							<tr ng-repeat="presence in presences | filter: searchText">
+							<tr ng-repeat="presence in vm.presences | filter: searchText">
 								<td >{{presence.carte.eleve.nom && presence.carte.eleve.nom + ' ' + presence.carte.eleve.prenom || presence.carte.professeur.nom + ' ' + presence.carte.professeur.prenom}}</td>
 								<td>{{presence.cour.code_module}}</td>
 								<td>{{presence.cour.date | date:'EEEE':'fr'}}</td>
