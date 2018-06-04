@@ -31,7 +31,7 @@
     <string name="tab_text_2_student">Mes absences</string>
     <string name="tab_text_2_teacher">Mes présences</string>
     <string name="tab_text_3">Mon compte</string>
-    <string name="tab_text_4">Exclure un élève</string>
+    <string name="tab_text_4">Voir le cours</string>
     <string name="send_password">Envoyer le code</string>
     <string name="information">
         1) Passes ta carte NFC près du lecteur pour t\'identifier\n\n

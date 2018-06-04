@@ -17,7 +17,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     // Database Name
     private static final String DATABASE_NAME = "UserManager.db";
@@ -30,11 +30,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USER_NAME = "user_name";
     private static final String COLUMN_USER_EMAIL = "user_email";
     private static final String COLUMN_USER_PASSWORD = "user_password";
+    private static final String COLUMN_USER_CARD_ID = "user_card_id";
+    private static final String COLUMN_USER_DROIT = "user_droit";
 
     // create table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT" + ")";
+            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_DROIT
+            + " TEXT," + COLUMN_USER_CARD_ID + " TEXT" + ")";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -99,6 +102,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USER_NAME, user.getName());
         values.put(COLUMN_USER_EMAIL, user.getEmail());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_DROIT, user.isTeacher());
+        values.put(COLUMN_USER_CARD_ID, user.getCard_id());
 
         // Inserting Row
         db.insert(TABLE_USER, null, values);
@@ -126,13 +131,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
                 user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
                 user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+                user.setTeacher(cursor.getString(cursor.getColumnIndex(COLUMN_USER_DROIT)));
+                user.setCard_id(cursor.getString(cursor.getColumnIndex(COLUMN_USER_CARD_ID)));
                 userList.add(user);
             } while (cursor.moveToNext());
         }
-//             user.setId(1);
-//             user.setName("ooo");
-//             user.setEmail("aaa@gmail.com");
-//             user.setPassword("az");
 
           cursor.close();
           db.close();

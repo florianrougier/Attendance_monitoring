@@ -38,9 +38,9 @@ class TagTool(CommandLineInterface):
         subparsers = parser.add_subparsers(
             title="commands", dest="command")
         add_show_parser(subparsers.add_parser(
-                'show', help='pretty print ndef data'))
+                'show -l'))
 
-        self.rdwr_commands = {"show": self.show_tag,}
+        self.rdwr_commands = {"show -l": self.show_tag,}
     
         super(TagTool, self).__init__(
             parser, groups="rdwr card dbg clf")
@@ -72,29 +72,19 @@ class TagTool(CommandLineInterface):
     def on_card_startup(self, target):
         pass
 
-    def on_card_connect(self, tag):
-        log.info("tag activated")
-        return self.emulate_tag_start(tag)
-
-    def on_card_release(self, tag):
-        log.info("tag released")
-        self.emulate_tag_stop(tag)
-        return True
-
     def show_tag(self, tag):
         print(tag)
         self.id_card = tag.identifier.encode("hex")
-        
-        
-        # When the card is in contact with the reader dor too long, it is possible that the below lines execute
-        if self.options.verbose:
-            print("Memory Dump:")
-            print('  ' + '\n  '.join(tag.dump()))
-
-    def send_id(self):
         data = {"card_id": self.id_card} #This line allows us to retrieve the id of the card
-        r = requests.post("http://test.fr", data = data) # Send the card id to the server CHANGE THE URL WITH THE REAL ONE
-        print(r.status_code)
+        try:
+            # Send the card id to the server CHANGE THE URL WITH THE REAL ONE
+            r = requests.post("http://localhost:8080", data = data) 
+            print(r.status_code)
+            print(r.text)
+        except requests.exceptions.ConnectionError:
+            print("Connection failed")
+        
+            
         
         
 
@@ -119,9 +109,10 @@ if __name__ == '__main__':
         sys.exit(0)
 
     if len(prog) == 1:
-        sys.argv = sys.argv + ['show']
+        sys.argv = sys.argv + ['show -l']
 
     try:
         TagTool().run()
+        
     except ArgparseError as e:
         print(e, file=sys.stderr)

@@ -7,97 +7,16 @@
     android:background="@color/colorBackground"
     tools:context="com.androidtutorialshub.application.activities.MenuStudentActivity$PlaceholderFragment">
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:stretchColumns="*">
+        android:orientation="vertical">
 
-        <TableRow
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewAbsences"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/border">
-
-            <TextView
-                android:id="@+id/textView6"
-                style="@android:style/Widget.DeviceDefault.Light.TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Module"
-                android:textColor="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Jour"
-                android:textColor="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Date"
-                android:textColor="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Début"
-                android:textColor="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Fin"
-                android:textColor="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Code"
-                android:textColor="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Prénom prof"
-                android:textColor="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Nom prof"
-                android:textColor="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="Motif"
-                android:textColor="@android:color/background_dark" />
-
-        </TableRow>
-
-    </TableLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:background="@android:color/white" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

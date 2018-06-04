@@ -13,14 +13,34 @@ public class User {
     @SerializedName("nom")
     private String name;
     private String email;
-    private boolean isTeacher;
+    private String droit;
+    private String card_id;
 
-    public boolean isTeacher() {
-        return isTeacher;
+    public User() {
+
     }
 
-    public void setTeacher(boolean teacher) {
-        isTeacher = teacher;
+    public User(String name, String email, String droit, String card_id) {
+        this.name = name;
+        this.email = email;
+        this.droit = droit;
+        this.card_id = card_id;
+    }
+
+    public String getCard_id() {
+        return card_id;
+    }
+
+    public void setCard_id(String card_id) {
+        this.card_id = card_id;
+    }
+
+    public String isTeacher() {
+        return droit;
+    }
+
+    public void setTeacher(String teacher) {
+        droit = teacher;
     }
 
     @SerializedName("prenom")

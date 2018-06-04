@@ -35,7 +35,7 @@ public class UsersListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_users_list);
+        setContentView(R.layout.fragment3_menu);
         getSupportActionBar().setTitle("");
         initViews();
         initObjects();

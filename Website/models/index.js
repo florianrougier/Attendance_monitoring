@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt');
 
 
 // crée une instance sequelize avec les informations de la base de donnée locale
-var sequelize = new Sequelize('postgres://postgres:saucisson@localhost:5432/projetmintest', {
+var sequelize = new Sequelize('postgres://postgres@localhost:5432/projetmintest', {
 	dialect: 'postgres',
 	operatorsAliases: false,
 	define: {

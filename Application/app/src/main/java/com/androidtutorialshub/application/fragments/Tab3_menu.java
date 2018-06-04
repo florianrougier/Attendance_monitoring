@@ -7,19 +7,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.androidtutorialshub.application.R;
 import com.androidtutorialshub.application.adapters.UsersRecyclerAdapter;
 import com.androidtutorialshub.application.data.DatabaseHelper;
-import com.androidtutorialshub.application.helpers.InputValidation;
 import com.androidtutorialshub.application.model.User;
 
 import java.util.ArrayList;
@@ -83,7 +80,7 @@ public class Tab3_menu extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_users_list, container, false);
+        View v = inflater.inflate(R.layout.fragment3_menu, container, false);
         // Inflate the layout for this fragment
         return v;
     }

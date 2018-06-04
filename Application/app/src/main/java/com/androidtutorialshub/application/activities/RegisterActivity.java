@@ -141,6 +141,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             user.setName(textInputEditTextName.getText().toString().trim());
             user.setEmail(textInputEditTextEmail.getText().toString().trim());
             user.setPassword(textInputEditTextPassword.getText().toString().trim());
+            user.setTeacher("Professeur");
+            user.setCard_id(textInputEditTextPassword.getText().toString().trim());
 
             databaseHelper.addUser(user);
 

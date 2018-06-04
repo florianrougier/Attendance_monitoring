@@ -2,8 +2,11 @@ package com.androidtutorialshub.application.activities;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -25,6 +28,7 @@ import com.androidtutorialshub.application.fragments.Tab1_menu;
 import com.androidtutorialshub.application.fragments.Tab2_menu;
 import com.androidtutorialshub.application.fragments.Tab3_menu;
 import com.androidtutorialshub.application.fragments.Tab4_menu;
+import com.androidtutorialshub.application.service.CustomWifiManager;
 
 public class MenuTeacherActivity extends AppCompatActivity
                                  implements Tab1_menu.OnFragmentInteractionListener,
@@ -47,6 +51,7 @@ public class MenuTeacherActivity extends AppCompatActivity
      */
     private ViewPager mViewPager;
     private String email;
+    private Bundle bundleNotif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,11 @@ public class MenuTeacherActivity extends AppCompatActivity
         });
         Intent intent = getIntent();
         this.email =intent.getStringExtra("EMAIL");
+
+        // Retrieve Bundle from notification
+        if (intent.getBundleExtra("bundleNotif") != null) {
+            this.bundleNotif = intent.getBundleExtra("bundleNotif");
+        }
     }
 
 
@@ -97,6 +107,10 @@ public class MenuTeacherActivity extends AppCompatActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            // Clear the cache
+            SharedPreferences preferences = getApplicationContext().getSharedPreferences("PREF", MODE_PRIVATE);
+            preferences.edit().clear().apply();
+
             // Déconnexion
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -118,6 +132,13 @@ public class MenuTeacherActivity extends AppCompatActivity
     }
 
     public void changePassword(View view) {
+    }
+
+    // Method to handle click on button to send code to server
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public void sendPassword(View view) {
+        CustomWifiManager wifiManager = new CustomWifiManager();
+        wifiManager.getAvailableWifi(view.getContext());
     }
 
 
@@ -172,7 +193,9 @@ public class MenuTeacherActivity extends AppCompatActivity
             Fragment fragment = null;
             switch (position){
                 case 0:
-                    fragment = new Tab1_menu(); // TODO Replace with instantiate (pass the email address)
+                    if (bundleNotif!=null)
+                        fragment = Tab1_menu.newInstance(bundleNotif);
+                    else fragment = new Tab1_menu();
                     break;
                 case 1:
                     fragment = new Tab2_menu();

@@ -2,7 +2,11 @@ package com.androidtutorialshub.application.activities;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,6 +30,7 @@ import com.androidtutorialshub.application.R;
 import com.androidtutorialshub.application.fragments.Tab1_menu;
 import com.androidtutorialshub.application.fragments.Tab2_menu;
 import com.androidtutorialshub.application.fragments.Tab3_menu;
+import com.androidtutorialshub.application.service.CustomWifiManager;
 
 public class MenuStudentActivity extends AppCompatActivity
                                  implements Tab1_menu.OnFragmentInteractionListener,
@@ -46,6 +51,8 @@ public class MenuStudentActivity extends AppCompatActivity
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private String email;
+    private Bundle bundleNotif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,13 @@ public class MenuStudentActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+        Intent intent = getIntent();
+        this.email =intent.getStringExtra("EMAIL");
+
+        // Retrieve Bundle from notification
+        if (intent.getBundleExtra("bundleNotif") != null) {
+            this.bundleNotif = intent.getBundleExtra("bundleNotif");
+        }
 
     }
 
@@ -95,6 +109,10 @@ public class MenuStudentActivity extends AppCompatActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            // Clear the cache
+            SharedPreferences preferences = getApplicationContext().getSharedPreferences("PREF", MODE_PRIVATE);
+            preferences.edit().clear().apply();
+
             // Déconnexion
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -115,6 +133,12 @@ public class MenuStudentActivity extends AppCompatActivity
 
     }
 
+    // Method to handle click on button to send code to server
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public void sendPassword(View view) {
+        CustomWifiManager wifiManager = new CustomWifiManager();
+        wifiManager.getAvailableWifi(view.getContext());
+    }
 
 
     /**
@@ -146,7 +170,7 @@ public class MenuStudentActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment1_menu, container, false);
-            TextView textView = rootView.findViewById(R.id.section_label);
+
             return rootView;
         }
     }
@@ -168,13 +192,15 @@ public class MenuStudentActivity extends AppCompatActivity
             Fragment fragment = null;
             switch (position){
                 case 0:
-                    fragment = new Tab1_menu(); // TODO Replace with instantiate (pass the email address)
+                    if (bundleNotif != null)
+                        fragment = Tab1_menu.newInstance(bundleNotif);
+                    else fragment = new Tab1_menu();
                     break;
                 case 1:
                     fragment = new Tab2_menu();
                     break;
                 case 2:
-                    fragment = new Tab3_menu();
+                    fragment = Tab3_menu.newInstance(email);
                     break;
             }
             return fragment;

@@ -59,7 +59,7 @@ public class UpdateUserService extends IntentService {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://ama-gestion-clients.appspot.com/") // TODO: ADD THE RIGHT URL !
+                .baseUrl("https://mincheck.herokuapp.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
