@@ -6,16 +6,6 @@ var myApp = angular
 
 function mainController($scope, $http) {
 
-	$scope.dataform = {};
-
-	// ========== TODO : ==============
-	// get les informations de présence
-	// delete absence
-	// post status
-	// create user
-	// create cours
-	// delete cours
-
 	// get pour récupérer la liste des presences d'un utilisateur
 	$http.get('/getUserPresences')
 		.success(function(data) {
@@ -40,15 +30,30 @@ function mainController($scope, $http) {
 	$http.get('/getListePresences')
 		.success(function(data) {
 			$scope.presences = data;
+			console.log(data);
 		})
 		.error(function(data) {
 			// afficher l'erreur dans le gui
 			console.log('Erreur : ' + data)
 		});
 
+/*
+	// get pour récupérer la liste des présences/absences
+	$http.get('/getListePresences2')
+		.success(function(data) {
+			$scope.presences = data;
+			console.log(data);
+		})
+		.error(function(data) {
+			// afficher l'erreur dans le gui
+			console.log('Erreur : ' + data)
+		});
+*/
+
+	// $scope.dataform = {};
 
 	// crééer un élément dans une table
-	/*
+	/* ================================== plutot update
 	$scope.createBLABLA function () {
 		$http.post('route...', $scope.dataform)
 			.success(function(data) {
@@ -68,6 +73,18 @@ function mainController($scope, $http) {
 		$http.delete('/supprimerUnUtilisateur' + email)
 			.success(function(data) {
 				$scope.users = data;
+			})
+			.error(function(data) {
+				console.log('Erreur : ' + data)
+			});
+	};
+
+	// supprimer un élément d'un table =============================================================================
+	$scope.supprimerUnePresence = function(user) {
+		$http.delete('/supprimerUnePresence' + user)
+			.success(function(data) {
+				$scope.presence_a_supprimer = data;
+				console.log(presence_a_supprimer);
 			})
 			.error(function(data) {
 				console.log('Erreur : ' + data)

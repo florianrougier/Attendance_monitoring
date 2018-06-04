@@ -1,7 +1,7 @@
 
 module.exports = (sequelize, DataTypes) => {
 
-	var bcrypt = require('bcrypt');
+	//var bcrypt = require('bcrypt');
 	var password_generator = require('generate-password');
 	var nodemailer = require('nodemailer');
 
@@ -33,15 +33,15 @@ module.exports = (sequelize, DataTypes) => {
 				if (user.droits === 'admin' ) {
 
 				} else {
-					//var password_generated = password_generator.generate({length:8, numbers:true});
+					/*//var password_generated = password_generator.generate({length:8, numbers:true});
 					password_generated = password_generator.generate({length:8, numbers:true});
 					console.log("PASSWORD : " + password_generated);
 					const salt = bcrypt.genSaltSync();
-					user.password = bcrypt.hashSync(password_generated, salt);
+					user.password = bcrypt.hashSync(password_generated, salt);*/
 				}
 			},
 			beforeCreate: (user) => {
-				if (user.droits === 'admin' ) {
+				/*if (user.droits === 'admin' ) {
 					console.log('PASSWORD : ' + user.password);
 					const salt = bcrypt.genSaltSync();
 					user.password = bcrypt.hashSync(user.password, salt);
@@ -51,15 +51,15 @@ module.exports = (sequelize, DataTypes) => {
 					//console.log("PASSWORD : " + password_generated);
 					//const salt = bcrypt.genSaltSync();
 					//user.password = bcrypt.hashSync(password_generated, salt);
-				}
+				}*/
 				
 			},
 			afterCreate: (user) => {
 				/*var transporter = nodemailer.createTransport({
 			        service: 'Outlook365',
 			        auth: {
-			            user: 'simon.negrier@epfedu.fr',
-			            pass: 'StupidEKeV91.@'
+			            user: 'email_qui_evoie',
+			            pass: 'code_mail'
 			        }
 			    });
 
@@ -112,24 +112,9 @@ module.exports = (sequelize, DataTypes) => {
 
 
 	User.prototype.validPassword = function (password) {
-		return bcrypt.compareSync(password, this.password);
-	}
-/*
-	// A ECRIRE
-	// le prof doit pouvoir exclure un utilisateur
-	User.prototype.exclureEleve = function () {
-		if (this.droits === 'professeur') {
-
-		}
+		//return bcrypt.compareSync(password, this.password);
 	}
 
-	// A ECRIRE
-	// l'administration doit pouvoir modifier le statut de présence d'un élève
-	User.prototype.modifierStatusUser = function () {
-		if (this.droits === 'admin') {
-
-		}
-	}*/
 
 	return User;
 };

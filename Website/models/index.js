@@ -1,10 +1,16 @@
 var Sequelize = require('sequelize');
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
 
 
 // crée une instance sequelize avec les informations de la base de donnée locale
+<<<<<<< HEAD
 var sequelize = new Sequelize('postgres://postgres@localhost:5432/projetmintest', {
+=======
+var sequelize = new Sequelize('postgres://ghhxnvsrsuaota:4883b7592cd8ef43bb0673548f174a1fabcafcaf60cd0c94a2279a795ec63acf@ec2-54-243-137-182.compute-1.amazonaws.com:5432/d76m91p3mhcu4k', {
+>>>>>>> 2c056613602423f7903dce6dec3e6ed34e855b9e
 	dialect: 'postgres',
+  host: 'https://mincheck.herokuapp.com/',
+  port: 5432,
 	operatorsAliases: false,
 	define: {
         timestamps: false

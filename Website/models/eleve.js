@@ -24,8 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 			unqique:true,
 			primaryKey:true
 
-		}
-
+		},
 	});
 
 	// models : db et models.item : item reprends le nom du champ dans la db
